@@ -264,6 +264,7 @@ def generate_all_synthetic_data(
     output_dir: str | Path | None = None,
     seed: int = 42,
     months: int = 12,
+    validate: bool = True,
 ) -> dict[str, pd.DataFrame]:
     """Generate all synthetic wealth-management datasets and optionally save them."""
     firms = load_firm_seed_data(max_firms=30)
@@ -278,6 +279,20 @@ def generate_all_synthetic_data(
         "synthetic_accounts": accounts,
         "synthetic_monthly_performance": monthly_performance,
     }
+
+    if validate:
+        from qa.validate_synthetic_integrity import run_synthetic_integrity_checks
+
+        issues = run_synthetic_integrity_checks(datasets, firms=firms)
+        if not issues.empty:
+            issue_summary = "; ".join(
+                f"{row.check_name}={row.issue_count}" for row in issues.itertuples(index=False)
+            )
+            raise ValueError(
+                "Synthetic baseline integrity checks failed. "
+                f"Issue counts: {issue_summary}. "
+                "Use validate=False only for intentionally corrupted QA datasets."
+            )
 
     if output_dir is not None:
         save_synthetic_datasets(datasets, output_dir)

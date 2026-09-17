@@ -28,6 +28,14 @@ The generator uses real public firm seed data when available so the synthetic la
 
 Clean baseline data comes before injected-error QA because later precision and recall evaluation needs a known-good starting point. Errors should be added intentionally in a controlled QA phase, not mixed into the first synthetic data generator.
 
+### 2026-09-17 - Phase 2 Step 2 Synthetic Integrity Validation
+
+We added local referential-integrity validation before loading or corrupting synthetic data so the project can prove the baseline branch, advisor, account, and monthly performance layer is internally consistent.
+
+Clean baseline validation is separate from later anomaly detection. These checks guard expected parent-child links and financial ranges; later QA phases will intentionally seed errors and evaluate whether anomaly rules detect them.
+
+Synthetic data remains clearly labeled in `RAW.SYNTHETIC_*` tables and stays separate from `RAW.SEC_ADV_FIRMS`, which is reserved for real public SEC/IAPD adviser firm data.
+
 ## Validation Notes
 
 ## Next Steps

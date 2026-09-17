@@ -61,6 +61,12 @@ The project now has a reproducible synthetic private-data generator for branches
 
 This keeps synthetic branch, advisor, account, and performance data separate from real SEC ADV firm data. The monthly performance layer is clean baseline data that later phases will intentionally corrupt with seeded errors for QA evaluation.
 
+## Phase 2 Step 2: Synthetic RAW Tables and Integrity Checks
+
+The Snowflake schema now includes RAW table definitions for synthetic branches, advisors, accounts, and monthly performance. These tables are explicitly labeled as synthetic private-style records and remain separate from `RAW.SEC_ADV_FIRMS`.
+
+Local validation checks now protect the clean baseline dataset before any future Snowflake loading or intentional error injection. This matters because the later QA and anomaly-detection phase needs a known-good baseline before seeded corruption can be measured with precision and recall.
+
 ## Snowflake Setup Notes
 
 - Use an XS warehouse for this portfolio project.
@@ -104,4 +110,4 @@ wealth-management-analytics-qa/
 
 ## Current Status
 
-Phase 2, Step 1 adds reproducible synthetic branch, advisor, account, and monthly performance generation. Error injection, anomaly detection, R modeling, Power BI assets, and Excel exports are intentionally not implemented yet.
+Phase 2, Step 2 adds synthetic RAW table definitions and local referential-integrity validation. Error injection, anomaly detection, R modeling, Power BI assets, and Excel exports are intentionally not implemented yet.
