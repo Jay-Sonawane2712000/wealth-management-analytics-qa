@@ -49,6 +49,19 @@ The project now includes a local SEC ADV ingestion interface for the future `RAW
 
 This step keeps real SEC adviser firm data structurally separate from synthetic advisor, account, and performance data. Snowflake loading comes later; this phase only normalizes local firm data into a consistent schema.
 
+## Phase 1 Step 3: Snowflake Schema and Loader Scaffold
+
+Snowflake DDL now defines the XS warehouse, `WEALTH_ANALYTICS` database, core schemas, and `RAW.SEC_ADV_FIRMS` table structure. `RAW.SEC_ADV_FIRMS` is reserved for real public SEC/IAPD adviser firm data, while future synthetic data will use separate `RAW.SYNTHETIC_*` tables.
+
+The Python Snowflake loader is credential-safe: it reads local `.env` values, validates required columns, and fails clearly before connecting when credentials are missing. This prepares the warehouse layer before synthetic data generation.
+
+## Snowflake Setup Notes
+
+- Use an XS warehouse for this portfolio project.
+- Set `AUTO_SUSPEND=60` to limit idle warehouse cost.
+- Do not start the Snowflake trial until ready to load data.
+- Never commit `.env`.
+
 ## Planned Tech Stack
 
 - Snowflake for warehouse schemas, views, and reporting layers.
@@ -85,4 +98,4 @@ wealth-management-analytics-qa/
 
 ## Current Status
 
-Phase 1, Step 2 adds the first bounded SEC ADV firm ingestion layer. Snowflake connections, synthetic data generation, anomaly detection, R modeling, Power BI assets, and Excel exports are intentionally not implemented yet.
+Phase 1, Step 3 adds executable Snowflake DDL and a credential-safe SEC ADV loader scaffold. Synthetic data generation, anomaly detection, R modeling, Power BI assets, and Excel exports are intentionally not implemented yet.
