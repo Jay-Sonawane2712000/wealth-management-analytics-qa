@@ -5,6 +5,7 @@ __pycache__/
 *.pyd
 .pytest_cache/
 pytest-cache-files-*/
+.pytest_tmp/
 .coverage
 htmlcov/
 build/
@@ -21,11 +22,11 @@ ENV/
 .ipynb_checkpoints/
 
 # Data outputs
-data/processed/
+!data/processed/.gitkeep
+data/processed/*.csv
 data/interim/
 data/output/
 exports/
-*.csv
 *.xlsx
 *.parquet
 

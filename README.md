@@ -43,6 +43,12 @@ The real and synthetic layers must stay separated for governance and interpretab
 7. Evaluate detection performance and document reviewer tradeoffs.
 8. Export reporting-ready tables for Excel and Power BI.
 
+## Phase 1 Step 2: SEC ADV Ingestion Interface
+
+The project now includes a local SEC ADV ingestion interface for the future `RAW.SEC_ADV_FIRMS` table. The module supports real-file mode for a staged SEC/IAPD-style CSV and a clearly labeled development fallback sample for offline testing.
+
+This step keeps real SEC adviser firm data structurally separate from synthetic advisor, account, and performance data. Snowflake loading comes later; this phase only normalizes local firm data into a consistent schema.
+
 ## Planned Tech Stack
 
 - Snowflake for warehouse schemas, views, and reporting layers.
@@ -79,4 +85,4 @@ wealth-management-analytics-qa/
 
 ## Current Status
 
-Phase 1, Step 1 is the initial scaffold only. Snowflake connections, data fetching, anomaly detection, R modeling, Power BI assets, and Excel exports are intentionally not implemented yet.
+Phase 1, Step 2 adds the first bounded SEC ADV firm ingestion layer. Snowflake connections, synthetic data generation, anomaly detection, R modeling, Power BI assets, and Excel exports are intentionally not implemented yet.
