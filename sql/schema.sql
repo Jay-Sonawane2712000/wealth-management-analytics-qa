@@ -95,6 +95,46 @@ CREATE TABLE IF NOT EXISTS RAW.SYNTHETIC_MONTHLY_PERFORMANCE (
     GENERATED_AT TIMESTAMP_NTZ
 );
 
+-- Corrupted synthetic performance exists only for QA evaluation. These are not
+-- production financial records and should never be treated as clean reporting
+-- data.
+CREATE TABLE IF NOT EXISTS RAW.SYNTHETIC_MONTHLY_PERFORMANCE_CORRUPTED (
+    PERFORMANCE_ID VARCHAR,
+    ACCOUNT_ID VARCHAR,
+    ADVISOR_ID VARCHAR,
+    FIRM_CRD_NUMBER VARCHAR,
+    BRANCH_ID VARCHAR,
+    MONTH_END_DATE DATE,
+    BEGINNING_AUM NUMBER(18,2),
+    ENDING_AUM NUMBER(18,2),
+    NET_NEW_ASSETS NUMBER(18,2),
+    REVENUE NUMBER(18,2),
+    FEE_RATE NUMBER(8,6),
+    SOURCE_TYPE VARCHAR,
+    GENERATED_AT TIMESTAMP_NTZ
+);
+
+-- QA.GROUND_TRUTH_INJECTED_ERRORS is the answer key for seeded-error QA. It is
+-- used to measure future detection rules with precision, recall, and false
+-- positive rates. These rows document intentional corruptions, not production
+-- events.
+CREATE TABLE IF NOT EXISTS QA.GROUND_TRUTH_INJECTED_ERRORS (
+    ERROR_ID VARCHAR,
+    PERFORMANCE_ID VARCHAR,
+    ACCOUNT_ID VARCHAR,
+    ADVISOR_ID VARCHAR,
+    BRANCH_ID VARCHAR,
+    FIRM_CRD_NUMBER VARCHAR,
+    MONTH_END_DATE DATE,
+    ERROR_TYPE VARCHAR,
+    FIELD_NAME VARCHAR,
+    ORIGINAL_VALUE VARCHAR,
+    CORRUPTED_VALUE VARCHAR,
+    SEVERITY VARCHAR,
+    DETECTION_FAMILY VARCHAR,
+    EXPLANATION VARCHAR,
+    INJECTED_AT TIMESTAMP_NTZ
+);
+
 -- Planned future QA tables:
--- QA.SEEDED_ERROR_LABELS: ground-truth labels for injected anomalies.
 -- QA.DETECTED_ANOMALIES: rule and statistical anomaly detection output.

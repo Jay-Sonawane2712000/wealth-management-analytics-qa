@@ -26,6 +26,8 @@ ENV/
 data/processed/*.csv
 data/raw/synthetic/*.csv
 !data/raw/synthetic/.gitkeep
+data/raw/synthetic_corrupted/*.csv
+!data/raw/synthetic_corrupted/.gitkeep
 data/interim/
 data/output/
 exports/

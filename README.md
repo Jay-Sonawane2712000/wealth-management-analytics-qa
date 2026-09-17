@@ -73,6 +73,12 @@ The project now has clean baseline SQL KPI views for advisor, branch, firm, and 
 
 This establishes a known-good reporting foundation before seeded-error QA and anomaly detection. The executive summary intentionally marks QA as `QA_NOT_RUN_YET` because anomaly detection and measured QA evaluation have not been implemented.
 
+## Phase 3 Step 1: Seeded Error Injection
+
+The project now creates a corrupted copy of synthetic monthly performance data and a labeled ground-truth answer key in `QA.GROUND_TRUTH_INJECTED_ERRORS`. The injector records exactly which rows were changed, which field was corrupted, the before/after values, severity, and whether the issue belongs to hard-rule or statistical-rule detection.
+
+This is the start of the depth centerpiece: future phases can measure precision and recall because the project now has known injected errors to detect.
+
 ## Snowflake Setup Notes
 
 - Use an XS warehouse for this portfolio project.
@@ -116,4 +122,4 @@ wealth-management-analytics-qa/
 
 ## Current Status
 
-Phase 2, Step 3 adds baseline Snowflake KPI and QA health views. Error injection, anomaly detection, R modeling, Power BI assets, and Excel exports are intentionally not implemented yet.
+Phase 3, Step 1 adds seeded-error injection and labeled ground-truth outputs. Hard-rule detection, statistical anomaly detection, precision/recall evaluation, R modeling, Power BI assets, and Excel exports are intentionally not implemented yet.

@@ -44,6 +44,14 @@ We built KPI views before anomaly injection so the project has a known-good repo
 
 The SQL is tested offline by checking structure, required view names, source table references, and safe-division patterns because Snowflake execution is not required yet.
 
+### 2026-09-17 - Phase 3 Step 1 Seeded Error Injection
+
+Seeded-error injection comes before detection because the project needs a controlled set of known bad records before it can honestly evaluate whether QA rules find them.
+
+The ground-truth answer key is necessary for precision and recall: every injected issue records the corrupted row, field, original value, corrupted value, severity, and detection family.
+
+Both obvious deterministic errors and subtle statistical anomalies are included so later QA can test simple business-rule checks as well as threshold-based anomaly detection.
+
 ## Validation Notes
 
 ## Next Steps
