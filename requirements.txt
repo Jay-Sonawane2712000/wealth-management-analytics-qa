@@ -1,0 +1,12 @@
+pandas
+numpy
+snowflake-connector-python
+python-dotenv
+requests
+openpyxl
+xlsxwriter
+pytest
+scikit-learn
+matplotlib
+seaborn
+jupyter

@@ -1,0 +1,82 @@
+# Wealth Management Analytics QA
+
+## Project Overview
+
+This project is a Snowflake-based financial reporting QA system for a wealth-management analytics use case. It is designed to show how public regulatory data, synthetic private-style operating data, and a measured QA layer can support trustworthy monthly reporting.
+
+The portfolio story is not simply a dashboard. The centerpiece is a financial reporting QA and anomaly-detection layer that will seed known errors, preserve labeled ground truth, detect anomalies, and evaluate detection quality with precision, recall, and false-positive rate.
+
+## Why This Project Exists
+
+Wealth-management reporting depends on clean adviser, account, asset, and performance data. Small issues such as stale AUM, impossible returns, duplicate accounts, or mismatched adviser relationships can lead to misleading KPI dashboards and poor review decisions.
+
+This project exists to demonstrate an analytics workflow that treats data quality as a measurable product outcome instead of a final manual cleanup step.
+
+## Depth Centerpiece: Financial Reporting QA and Anomaly Detection
+
+Later phases will build a QA layer that:
+
+- Injects known financial reporting errors into synthetic data.
+- Stores a labeled ground-truth table for seeded issues.
+- Detects anomalies using hard business rules and statistical rules.
+- Evaluates precision, recall, false-positive rate, and reviewer tradeoffs.
+- Documents threshold choices for finance and analytics stakeholders.
+
+The goal is to make QA performance measurable, explainable, and suitable for recruiter review.
+
+## Real vs Synthetic Data Boundary
+
+`RAW.SEC_ADV_FIRMS` will contain real public SEC/IAPD investment adviser firm data.
+
+`RAW.SYNTHETIC_*` tables will contain generated private-style advisor, account, and monthly performance data.
+
+The real and synthetic layers must stay separated for governance and interpretability. Public adviser facts can support realistic firm context, while synthetic client/account/performance records avoid exposing private financial data. Downstream models and reports should preserve that boundary clearly.
+
+## Planned Architecture
+
+1. Ingest public SEC/IAPD adviser firm data into `RAW.SEC_ADV_FIRMS`.
+2. Generate synthetic advisor, account, and monthly performance tables under `RAW.SYNTHETIC_*`.
+3. Clean and conform source tables into Snowflake `CLEAN` models.
+4. Build analytics and reporting views for portfolio KPIs.
+5. Inject seeded data quality issues and store ground-truth labels in the `QA` schema.
+6. Detect anomalies with hard rules and statistical thresholds.
+7. Evaluate detection performance and document reviewer tradeoffs.
+8. Export reporting-ready tables for Excel and Power BI.
+
+## Planned Tech Stack
+
+- Snowflake for warehouse schemas, views, and reporting layers.
+- Python for ingestion, synthetic data generation, QA rules, and evaluation.
+- pandas and NumPy for data preparation.
+- scikit-learn for evaluation utilities and later modeling support.
+- R for an advisor AUM growth modeling component.
+- pytest and GitHub Actions for automated validation.
+- Power BI and Excel for downstream reporting.
+
+## Repository Structure
+
+```text
+wealth-management-analytics-qa/
+├── data/raw/                 # Raw SEC/IAPD and synthetic source files
+├── ingestion/                # Future SEC fetch and synthetic generation modules
+├── qa/                       # Error injection, detection rules, and evaluation
+├── sql/                      # Snowflake schema, KPI, and QA view definitions
+├── r/                        # Planned R modeling component
+├── reporting/                # Excel export and Power BI-ready documentation
+├── reports/                  # Written finance and QA reports
+├── notebooks/                # Threshold comparison exploration
+└── tests/                    # Scaffold and future logic tests
+```
+
+## Phase Roadmap
+
+- Phase 1: Create the professional project scaffold and repository foundation.
+- Phase 2: Add SEC/IAPD data ingestion and synthetic wealth-management data generation.
+- Phase 3: Build Snowflake schemas, clean tables, KPI views, and reporting views.
+- Phase 4: Implement error injection, ground-truth labeling, hard rules, and statistical rules.
+- Phase 5: Evaluate QA performance with precision, recall, false-positive rate, and threshold tradeoffs.
+- Phase 6: Add R modeling, Excel export, Power BI documentation, and final portfolio reports.
+
+## Current Status
+
+Phase 1, Step 1 is the initial scaffold only. Snowflake connections, data fetching, anomaly detection, R modeling, Power BI assets, and Excel exports are intentionally not implemented yet.

@@ -1,0 +1,47 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+.pytest_cache/
+pytest-cache-files-*/
+.coverage
+htmlcov/
+build/
+dist/
+*.egg-info/
+
+# Virtual environments
+.venv/
+venv/
+env/
+ENV/
+
+# Notebooks
+.ipynb_checkpoints/
+
+# Data outputs
+data/processed/
+data/interim/
+data/output/
+exports/
+*.csv
+*.xlsx
+*.parquet
+
+# Credentials and private config
+.env
+.env.*
+!.env.example
+config/private/
+snowflake.private.toml
+connections.toml
+
+# OS and editor
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+
+# Keep scaffold placeholders
+!.gitkeep
