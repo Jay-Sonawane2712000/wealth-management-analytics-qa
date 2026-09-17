@@ -55,6 +55,12 @@ Snowflake DDL now defines the XS warehouse, `WEALTH_ANALYTICS` database, core sc
 
 The Python Snowflake loader is credential-safe: it reads local `.env` values, validates required columns, and fails clearly before connecting when credentials are missing. This prepares the warehouse layer before synthetic data generation.
 
+## Phase 2 Step 1: Synthetic Wealth-Management Data
+
+The project now has a reproducible synthetic private-data generator for branches, advisors, client accounts, and monthly performance records. It uses real/public firm-level SEC ADV seed data when available, then writes only clearly labeled synthetic operating data for future `RAW.SYNTHETIC_*` tables.
+
+This keeps synthetic branch, advisor, account, and performance data separate from real SEC ADV firm data. The monthly performance layer is clean baseline data that later phases will intentionally corrupt with seeded errors for QA evaluation.
+
 ## Snowflake Setup Notes
 
 - Use an XS warehouse for this portfolio project.
@@ -98,4 +104,4 @@ wealth-management-analytics-qa/
 
 ## Current Status
 
-Phase 1, Step 3 adds executable Snowflake DDL and a credential-safe SEC ADV loader scaffold. Synthetic data generation, anomaly detection, R modeling, Power BI assets, and Excel exports are intentionally not implemented yet.
+Phase 2, Step 1 adds reproducible synthetic branch, advisor, account, and monthly performance generation. Error injection, anomaly detection, R modeling, Power BI assets, and Excel exports are intentionally not implemented yet.

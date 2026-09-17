@@ -20,6 +20,14 @@ Tests should not depend on a live Snowflake account because portfolio reviewers 
 
 Real public SEC/IAPD adviser firm data remains assigned to `RAW.SEC_ADV_FIRMS`. Future generated advisor, account, and performance data will use separate `RAW.SYNTHETIC_*` tables so public regulatory data and synthetic private-style data are not blurred.
 
+### 2026-09-17 - Phase 2 Step 1 Synthetic Wealth-Management Generator
+
+Advisor, account, and monthly performance data must be synthetic because those records represent private-style operating data that should not come from public SEC/IAPD files or expose real client relationships.
+
+The generator uses real public firm seed data when available so the synthetic layer can inherit realistic firm context while still keeping branch, advisor, account, and performance records clearly labeled as `source_type = "synthetic"`.
+
+Clean baseline data comes before injected-error QA because later precision and recall evaluation needs a known-good starting point. Errors should be added intentionally in a controlled QA phase, not mixed into the first synthetic data generator.
+
 ## Validation Notes
 
 ## Next Steps

@@ -24,6 +24,8 @@ ENV/
 # Data outputs
 !data/processed/.gitkeep
 data/processed/*.csv
+data/raw/synthetic/*.csv
+!data/raw/synthetic/.gitkeep
 data/interim/
 data/output/
 exports/
