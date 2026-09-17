@@ -5,5 +5,6 @@ __all__ = [
     "hard_rules",
     "statistical_rules",
     "evaluate",
+    "local_kpi_checks",
     "validate_synthetic_integrity",
 ]

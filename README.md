@@ -67,6 +67,12 @@ The Snowflake schema now includes RAW table definitions for synthetic branches, 
 
 Local validation checks now protect the clean baseline dataset before any future Snowflake loading or intentional error injection. This matters because the later QA and anomaly-detection phase needs a known-good baseline before seeded corruption can be measured with precision and recall.
 
+## Phase 2 Step 3: Baseline KPI Reporting Views
+
+The project now has clean baseline SQL KPI views for advisor, branch, firm, and executive monthly reporting. These views combine real public firm metadata from `RAW.SEC_ADV_FIRMS` with synthetic private-style performance data from `RAW.SYNTHETIC_*`.
+
+This establishes a known-good reporting foundation before seeded-error QA and anomaly detection. The executive summary intentionally marks QA as `QA_NOT_RUN_YET` because anomaly detection and measured QA evaluation have not been implemented.
+
 ## Snowflake Setup Notes
 
 - Use an XS warehouse for this portfolio project.
@@ -110,4 +116,4 @@ wealth-management-analytics-qa/
 
 ## Current Status
 
-Phase 2, Step 2 adds synthetic RAW table definitions and local referential-integrity validation. Error injection, anomaly detection, R modeling, Power BI assets, and Excel exports are intentionally not implemented yet.
+Phase 2, Step 3 adds baseline Snowflake KPI and QA health views. Error injection, anomaly detection, R modeling, Power BI assets, and Excel exports are intentionally not implemented yet.

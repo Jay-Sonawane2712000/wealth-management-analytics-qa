@@ -36,6 +36,14 @@ Clean baseline validation is separate from later anomaly detection. These checks
 
 Synthetic data remains clearly labeled in `RAW.SYNTHETIC_*` tables and stays separate from `RAW.SEC_ADV_FIRMS`, which is reserved for real public SEC/IAPD adviser firm data.
 
+### 2026-09-17 - Phase 2 Step 3 Baseline KPI Reporting Views
+
+We built KPI views before anomaly injection so the project has a known-good reporting layer for advisor, branch, firm, and executive summaries. Later seeded-error QA can then compare corrupted data against a clean reporting foundation.
+
+`QA_NOT_RUN_YET` is used honestly in the executive summary instead of pretending QA is complete. The project has baseline validation and health checks, but full injected-error anomaly detection and precision/recall evaluation come later.
+
+The SQL is tested offline by checking structure, required view names, source table references, and safe-division patterns because Snowflake execution is not required yet.
+
 ## Validation Notes
 
 ## Next Steps
