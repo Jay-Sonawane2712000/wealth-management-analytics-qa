@@ -235,6 +235,8 @@ def generate_monthly_performance(
             ending_aum = max(0.0, beginning_aum * (1 + monthly_return) + net_new_assets)
             average_aum = (beginning_aum + ending_aum) / 2
             revenue = max(0.0, average_aum * fee_rate / 12)
+            if account.account_status == "closed":
+                revenue = 0.0
 
             rows.append(
                 {

@@ -52,6 +52,14 @@ The ground-truth answer key is necessary for precision and recall: every injecte
 
 Both obvious deterministic errors and subtle statistical anomalies are included so later QA can test simple business-rule checks as well as threshold-based anomaly detection.
 
+### 2026-09-18 - Phase 3 Step 2 Hard-Rule Detection
+
+Hard rules are separated from statistical anomaly detection because they answer a different question: whether deterministic business constraints were violated, not whether a value is unusual relative to a pattern.
+
+These checks are necessary but not enough for the project depth story. Negative values, invalid fee rates, duplicate account-month records, missing references, and null keys should be caught reliably, while subtler AUM and revenue anomalies will need statistical rules later.
+
+Evaluation is delayed until after both detection families exist so precision and recall can be measured across the full intended QA surface instead of only the obvious deterministic cases.
+
 ## Validation Notes
 
 ## Next Steps

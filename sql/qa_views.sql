@@ -57,3 +57,252 @@ SELECT
     COUNT_IF(FEE_RATE < 0.0025 OR FEE_RATE > 0.0150) AS issue_count,
     CASE WHEN COUNT_IF(FEE_RATE < 0.0025 OR FEE_RATE > 0.0150) = 0 THEN 'PASS' ELSE 'FAIL' END AS status
 FROM RAW.SYNTHETIC_MONTHLY_PERFORMANCE;
+
+-- Deterministic hard-rule detections on corrupted synthetic performance data.
+-- This view mirrors the local pandas hard-rule detector and is intended for
+-- future Snowflake execution. Statistical anomaly detection and scoring against
+-- ground truth come later.
+CREATE OR REPLACE VIEW QA.HARD_RULE_DETECTION_RESULTS AS
+WITH duplicate_account_month AS (
+    SELECT
+        ACCOUNT_ID,
+        MONTH_END_DATE
+    FROM RAW.SYNTHETIC_MONTHLY_PERFORMANCE_CORRUPTED
+    GROUP BY ACCOUNT_ID, MONTH_END_DATE
+    HAVING COUNT(*) > 1
+),
+raw_detections AS (
+    SELECT
+        'negative_ending_aum' AS rule_name,
+        'hard_rule' AS detection_family,
+        PERFORMANCE_ID,
+        ACCOUNT_ID,
+        ADVISOR_ID,
+        BRANCH_ID,
+        FIRM_CRD_NUMBER,
+        MONTH_END_DATE,
+        'ending_aum' AS field_name,
+        TO_VARCHAR(ENDING_AUM) AS observed_value,
+        'ending_aum >= 0' AS expected_condition,
+        'high' AS severity,
+        'Ending AUM is negative.' AS explanation,
+        CURRENT_TIMESTAMP()::TIMESTAMP_NTZ AS detected_at
+    FROM RAW.SYNTHETIC_MONTHLY_PERFORMANCE_CORRUPTED
+    WHERE ENDING_AUM < 0
+
+    UNION ALL
+
+    SELECT
+        'negative_revenue',
+        'hard_rule',
+        PERFORMANCE_ID,
+        ACCOUNT_ID,
+        ADVISOR_ID,
+        BRANCH_ID,
+        FIRM_CRD_NUMBER,
+        MONTH_END_DATE,
+        'revenue',
+        TO_VARCHAR(REVENUE),
+        'revenue >= 0',
+        'high',
+        'Revenue is negative.',
+        CURRENT_TIMESTAMP()::TIMESTAMP_NTZ
+    FROM RAW.SYNTHETIC_MONTHLY_PERFORMANCE_CORRUPTED
+    WHERE REVENUE < 0
+
+    UNION ALL
+
+    SELECT
+        'invalid_fee_rate_high',
+        'hard_rule',
+        PERFORMANCE_ID,
+        ACCOUNT_ID,
+        ADVISOR_ID,
+        BRANCH_ID,
+        FIRM_CRD_NUMBER,
+        MONTH_END_DATE,
+        'fee_rate',
+        TO_VARCHAR(FEE_RATE),
+        'fee_rate <= 0.0150',
+        'high',
+        'Fee rate is above the expected advisory range.',
+        CURRENT_TIMESTAMP()::TIMESTAMP_NTZ
+    FROM RAW.SYNTHETIC_MONTHLY_PERFORMANCE_CORRUPTED
+    WHERE FEE_RATE > 0.0150
+
+    UNION ALL
+
+    SELECT
+        'invalid_fee_rate_low',
+        'hard_rule',
+        PERFORMANCE_ID,
+        ACCOUNT_ID,
+        ADVISOR_ID,
+        BRANCH_ID,
+        FIRM_CRD_NUMBER,
+        MONTH_END_DATE,
+        'fee_rate',
+        TO_VARCHAR(FEE_RATE),
+        'fee_rate >= 0.0025',
+        'medium',
+        'Fee rate is below the expected advisory range.',
+        CURRENT_TIMESTAMP()::TIMESTAMP_NTZ
+    FROM RAW.SYNTHETIC_MONTHLY_PERFORMANCE_CORRUPTED
+    WHERE FEE_RATE < 0.0025
+
+    UNION ALL
+
+    SELECT
+        'duplicate_account_month',
+        'hard_rule',
+        p.PERFORMANCE_ID,
+        p.ACCOUNT_ID,
+        p.ADVISOR_ID,
+        p.BRANCH_ID,
+        p.FIRM_CRD_NUMBER,
+        p.MONTH_END_DATE,
+        'account_id,month_end_date',
+        p.ACCOUNT_ID || '|' || TO_VARCHAR(p.MONTH_END_DATE),
+        'one row per account_id and month_end_date',
+        'high',
+        'Multiple performance rows exist for the same account-month.',
+        CURRENT_TIMESTAMP()::TIMESTAMP_NTZ
+    FROM RAW.SYNTHETIC_MONTHLY_PERFORMANCE_CORRUPTED p
+    JOIN duplicate_account_month d
+        ON p.ACCOUNT_ID = d.ACCOUNT_ID
+        AND p.MONTH_END_DATE = d.MONTH_END_DATE
+
+    UNION ALL
+
+    SELECT
+        'revenue_on_closed_account',
+        'hard_rule',
+        p.PERFORMANCE_ID,
+        p.ACCOUNT_ID,
+        p.ADVISOR_ID,
+        p.BRANCH_ID,
+        p.FIRM_CRD_NUMBER,
+        p.MONTH_END_DATE,
+        'revenue',
+        TO_VARCHAR(p.REVENUE),
+        'revenue = 0 when account_status = closed',
+        'medium',
+        'Closed account has positive revenue.',
+        CURRENT_TIMESTAMP()::TIMESTAMP_NTZ
+    FROM RAW.SYNTHETIC_MONTHLY_PERFORMANCE_CORRUPTED p
+    JOIN RAW.SYNTHETIC_ACCOUNTS a
+        ON p.ACCOUNT_ID = a.ACCOUNT_ID
+    WHERE a.ACCOUNT_STATUS = 'closed'
+        AND p.REVENUE > 0
+
+    UNION ALL
+
+    SELECT
+        'missing_account_reference',
+        'hard_rule',
+        p.PERFORMANCE_ID,
+        p.ACCOUNT_ID,
+        p.ADVISOR_ID,
+        p.BRANCH_ID,
+        p.FIRM_CRD_NUMBER,
+        p.MONTH_END_DATE,
+        'account_id',
+        TO_VARCHAR(p.ACCOUNT_ID),
+        'account_id exists in synthetic_accounts',
+        'high',
+        'Performance row references a missing account.',
+        CURRENT_TIMESTAMP()::TIMESTAMP_NTZ
+    FROM RAW.SYNTHETIC_MONTHLY_PERFORMANCE_CORRUPTED p
+    LEFT JOIN RAW.SYNTHETIC_ACCOUNTS a
+        ON p.ACCOUNT_ID = a.ACCOUNT_ID
+    WHERE p.ACCOUNT_ID IS NOT NULL
+        AND a.ACCOUNT_ID IS NULL
+
+    UNION ALL
+
+    SELECT
+        'missing_advisor_reference',
+        'hard_rule',
+        p.PERFORMANCE_ID,
+        p.ACCOUNT_ID,
+        p.ADVISOR_ID,
+        p.BRANCH_ID,
+        p.FIRM_CRD_NUMBER,
+        p.MONTH_END_DATE,
+        'advisor_id',
+        TO_VARCHAR(p.ADVISOR_ID),
+        'advisor_id exists in synthetic_advisors',
+        'high',
+        'Performance row references a missing advisor.',
+        CURRENT_TIMESTAMP()::TIMESTAMP_NTZ
+    FROM RAW.SYNTHETIC_MONTHLY_PERFORMANCE_CORRUPTED p
+    LEFT JOIN RAW.SYNTHETIC_ADVISORS a
+        ON p.ADVISOR_ID = a.ADVISOR_ID
+    WHERE p.ADVISOR_ID IS NOT NULL
+        AND a.ADVISOR_ID IS NULL
+
+    UNION ALL
+
+    SELECT
+        'missing_branch_reference',
+        'hard_rule',
+        p.PERFORMANCE_ID,
+        p.ACCOUNT_ID,
+        p.ADVISOR_ID,
+        p.BRANCH_ID,
+        p.FIRM_CRD_NUMBER,
+        p.MONTH_END_DATE,
+        'branch_id',
+        TO_VARCHAR(p.BRANCH_ID),
+        'branch_id exists in synthetic_branches',
+        'high',
+        'Performance row references a missing branch.',
+        CURRENT_TIMESTAMP()::TIMESTAMP_NTZ
+    FROM RAW.SYNTHETIC_MONTHLY_PERFORMANCE_CORRUPTED p
+    LEFT JOIN RAW.SYNTHETIC_BRANCHES b
+        ON p.BRANCH_ID = b.BRANCH_ID
+    WHERE p.BRANCH_ID IS NOT NULL
+        AND b.BRANCH_ID IS NULL
+
+    UNION ALL
+
+    SELECT
+        'null_key_fields',
+        'hard_rule',
+        PERFORMANCE_ID,
+        ACCOUNT_ID,
+        ADVISOR_ID,
+        BRANCH_ID,
+        FIRM_CRD_NUMBER,
+        MONTH_END_DATE,
+        'key_fields',
+        'NULL',
+        'key fields are not null',
+        'high',
+        'One or more required key fields are null.',
+        CURRENT_TIMESTAMP()::TIMESTAMP_NTZ
+    FROM RAW.SYNTHETIC_MONTHLY_PERFORMANCE_CORRUPTED
+    WHERE PERFORMANCE_ID IS NULL
+        OR ACCOUNT_ID IS NULL
+        OR ADVISOR_ID IS NULL
+        OR BRANCH_ID IS NULL
+        OR FIRM_CRD_NUMBER IS NULL
+        OR MONTH_END_DATE IS NULL
+)
+SELECT
+    'SQL-HARD-' || LPAD(ROW_NUMBER() OVER (ORDER BY rule_name, performance_id)::VARCHAR, 6, '0') AS detection_id,
+    rule_name,
+    detection_family,
+    performance_id,
+    account_id,
+    advisor_id,
+    branch_id,
+    firm_crd_number,
+    month_end_date,
+    field_name,
+    observed_value,
+    expected_condition,
+    severity,
+    explanation,
+    detected_at
+FROM raw_detections;

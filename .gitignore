@@ -28,6 +28,8 @@ data/raw/synthetic/*.csv
 !data/raw/synthetic/.gitkeep
 data/raw/synthetic_corrupted/*.csv
 !data/raw/synthetic_corrupted/.gitkeep
+data/qa/detections/*.csv
+!data/qa/detections/.gitkeep
 data/interim/
 data/output/
 exports/

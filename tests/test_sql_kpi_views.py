@@ -53,3 +53,13 @@ def test_qa_views_define_baseline_health_summary_without_final_anomaly_claim():
     assert "FINAL ANOMALY DETECTION" in sql
     assert "CREATE OR REPLACE VIEW QA.DETECTED_ANOMALIES" not in sql
     assert "CREATE OR REPLACE VIEW QA.ANOMALY" not in sql
+
+
+def test_qa_views_define_hard_rule_detection_results():
+    sql = _read_sql("sql/qa_views.sql")
+
+    assert "CREATE OR REPLACE VIEW QA.HARD_RULE_DETECTION_RESULTS" in sql
+    assert "RAW.SYNTHETIC_MONTHLY_PERFORMANCE_CORRUPTED" in sql
+    assert "NEGATIVE_ENDING_AUM" in sql
+    assert "DUPLICATE_ACCOUNT_MONTH" in sql
+    assert "REVENUE_ON_CLOSED_ACCOUNT" in sql

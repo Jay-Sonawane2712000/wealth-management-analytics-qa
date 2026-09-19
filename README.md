@@ -79,6 +79,12 @@ The project now creates a corrupted copy of synthetic monthly performance data a
 
 This is the start of the depth centerpiece: future phases can measure precision and recall because the project now has known injected errors to detect.
 
+## Phase 3 Step 2: Hard-Rule QA Detection
+
+Hard-rule detection now identifies deterministic financial reporting issues in corrupted synthetic performance data. These rules cover negative AUM and revenue, fee-rate bounds, duplicate account-month rows, revenue on closed accounts, missing parent references, and null key fields.
+
+This is the first detector layer. Statistical anomaly detection comes next, and evaluation against ground truth comes after both detection families exist.
+
 ## Snowflake Setup Notes
 
 - Use an XS warehouse for this portfolio project.
@@ -122,4 +128,4 @@ wealth-management-analytics-qa/
 
 ## Current Status
 
-Phase 3, Step 1 adds seeded-error injection and labeled ground-truth outputs. Hard-rule detection, statistical anomaly detection, precision/recall evaluation, R modeling, Power BI assets, and Excel exports are intentionally not implemented yet.
+Phase 3, Step 2 adds deterministic hard-rule QA detection. Statistical anomaly detection, precision/recall evaluation, R modeling, Power BI assets, and Excel exports are intentionally not implemented yet.
