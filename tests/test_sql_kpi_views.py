@@ -73,3 +73,12 @@ def test_qa_views_define_statistical_detection_results():
     assert "ZSCORE_AUM_GROWTH_ANOMALY" in sql
     assert "ZSCORE_REVENUE_ANOMALY" in sql
     assert "STATISTICAL_RULE" in sql
+
+
+def test_schema_defines_evaluation_output_tables():
+    sql = _read_sql("sql/schema.sql")
+
+    assert "CREATE TABLE IF NOT EXISTS QA.EVALUATION_METRICS" in sql
+    assert "CREATE TABLE IF NOT EXISTS QA.DETECTION_GROUND_TRUTH_MATCHES" in sql
+    assert "PRECISION FLOAT" in sql
+    assert "F1_SCORE FLOAT" in sql

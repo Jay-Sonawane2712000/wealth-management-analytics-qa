@@ -70,6 +70,16 @@ Small groups are skipped to avoid unreliable statistics. A z-score or IQR thresh
 
 Evaluation is still delayed until the next phase because both hard-rule and statistical-rule detections should be scored together against the seeded-error ground truth.
 
+### 2026-09-18 - Phase 3 Step 4 QA Evaluation Metrics
+
+Evaluation comes after both detector families because the portfolio story needs to score the complete QA surface: deterministic hard rules plus statistical anomaly checks.
+
+Exact rule matching is used for hard rules because those seeded errors map directly to deterministic checks. Statistical anomalies can match at the detection-family level by `performance_id` because z-score and IQR methods may both detect the same injected AUM or revenue anomaly.
+
+Duplicate detections must not inflate true positives. One seeded ground-truth error can only be counted once; extra flags become false positives.
+
+Threshold comparison is the main depth story because it shows the tradeoff between catching more bad finance data and creating extra reviewer workload.
+
 ## Validation Notes
 
 ## Next Steps

@@ -91,6 +91,12 @@ Statistical detection now identifies unusual AUM growth and revenue patterns usi
 
 Precision and recall evaluation comes next, after both hard-rule and statistical-rule detections are available.
 
+## Phase 3 Step 4: QA Evaluation Metrics
+
+Detection outputs can now be scored against seeded ground truth. The evaluation layer reports precision, recall, false-positive rate, and F1 score, and it records row-level detection-to-ground-truth matches.
+
+Threshold comparison supports the core interview story: choosing a QA operating point based on the tradeoff between catching bad finance data and overwhelming reviewers. This completes the measured QA foundation.
+
 ## Snowflake Setup Notes
 
 - Use an XS warehouse for this portfolio project.
@@ -134,4 +140,4 @@ wealth-management-analytics-qa/
 
 ## Current Status
 
-Phase 3, Step 3 adds statistical anomaly detection for AUM growth and revenue patterns. Precision/recall evaluation, R modeling, Power BI assets, and Excel exports are intentionally not implemented yet.
+Phase 3, Step 4 adds QA evaluation metrics and threshold comparison. R modeling, Power BI assets, and Excel exports are intentionally not implemented yet.
