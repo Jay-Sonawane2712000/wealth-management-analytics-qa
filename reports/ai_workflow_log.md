@@ -60,6 +60,16 @@ These checks are necessary but not enough for the project depth story. Negative 
 
 Evaluation is delayed until after both detection families exist so precision and recall can be measured across the full intended QA surface instead of only the obvious deterministic cases.
 
+### 2026-09-18 - Phase 3 Step 3 Statistical Detection
+
+Statistical detection is needed in addition to hard rules because some seeded problems are not impossible values; they are unusual movements, such as extreme AUM jumps or revenue spikes.
+
+Thresholds are parameterized so later phases can tune reviewer workload versus missed anomalies instead of hardcoding one arbitrary sensitivity level.
+
+Small groups are skipped to avoid unreliable statistics. A z-score or IQR threshold is only meaningful when there is enough history to compare against.
+
+Evaluation is still delayed until the next phase because both hard-rule and statistical-rule detections should be scored together against the seeded-error ground truth.
+
 ## Validation Notes
 
 ## Next Steps

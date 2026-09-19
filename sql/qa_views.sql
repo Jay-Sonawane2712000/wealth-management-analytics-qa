@@ -306,3 +306,111 @@ SELECT
     explanation,
     detected_at
 FROM raw_detections;
+
+-- Warehouse-side statistical anomaly detection placeholder/implementation.
+-- Python detection is used for local development and testing. This view shows
+-- how AUM growth and revenue anomaly logic can be represented in Snowflake
+-- with window functions. Final evaluation against ground truth happens later.
+CREATE OR REPLACE VIEW QA.STATISTICAL_DETECTION_RESULTS AS
+WITH monthly_account_metrics AS (
+    SELECT
+        ACCOUNT_ID,
+        ADVISOR_ID,
+        BRANCH_ID,
+        FIRM_CRD_NUMBER,
+        MONTH_END_DATE,
+        SUM(ENDING_AUM) AS ending_aum,
+        SUM(REVENUE) AS revenue
+    FROM RAW.SYNTHETIC_MONTHLY_PERFORMANCE_CORRUPTED
+    GROUP BY
+        ACCOUNT_ID,
+        ADVISOR_ID,
+        BRANCH_ID,
+        FIRM_CRD_NUMBER,
+        MONTH_END_DATE
+),
+aum_growth AS (
+    SELECT
+        *,
+        LAG(ending_aum) OVER (
+            PARTITION BY ADVISOR_ID
+            ORDER BY MONTH_END_DATE
+        ) AS previous_month_ending_aum,
+        (ending_aum - LAG(ending_aum) OVER (
+            PARTITION BY ADVISOR_ID
+            ORDER BY MONTH_END_DATE
+        )) / NULLIF(LAG(ending_aum) OVER (
+            PARTITION BY ADVISOR_ID
+            ORDER BY MONTH_END_DATE
+        ), 0) AS mom_aum_growth
+    FROM monthly_account_metrics
+),
+scored AS (
+    SELECT
+        *,
+        AVG(mom_aum_growth) OVER (PARTITION BY ADVISOR_ID) AS avg_aum_growth,
+        STDDEV_POP(mom_aum_growth) OVER (PARTITION BY ADVISOR_ID) AS stddev_aum_growth,
+        AVG(revenue) OVER (PARTITION BY ADVISOR_ID) AS avg_revenue,
+        STDDEV_POP(revenue) OVER (PARTITION BY ADVISOR_ID) AS stddev_revenue
+    FROM aum_growth
+),
+raw_statistical_detections AS (
+    SELECT
+        'zscore_aum_growth_anomaly' AS rule_name,
+        'statistical_rule' AS detection_family,
+        NULL AS performance_id,
+        ACCOUNT_ID,
+        ADVISOR_ID,
+        BRANCH_ID,
+        FIRM_CRD_NUMBER,
+        MONTH_END_DATE,
+        'mom_aum_growth' AS field_name,
+        TO_VARCHAR(mom_aum_growth) AS observed_value,
+        'absolute z-score <= configured threshold' AS expected_condition,
+        'medium' AS severity,
+        'AUM growth z-score exceeded the configured threshold.' AS explanation,
+        CURRENT_TIMESTAMP()::TIMESTAMP_NTZ AS detected_at
+    FROM scored
+    WHERE stddev_aum_growth IS NOT NULL
+        AND stddev_aum_growth > 0
+        AND ABS((mom_aum_growth - avg_aum_growth) / stddev_aum_growth) > 3.0
+
+    UNION ALL
+
+    SELECT
+        'zscore_revenue_anomaly',
+        'statistical_rule',
+        NULL,
+        ACCOUNT_ID,
+        ADVISOR_ID,
+        BRANCH_ID,
+        FIRM_CRD_NUMBER,
+        MONTH_END_DATE,
+        'revenue',
+        TO_VARCHAR(revenue),
+        'absolute z-score <= configured threshold',
+        'medium',
+        'Revenue z-score exceeded the configured threshold.',
+        CURRENT_TIMESTAMP()::TIMESTAMP_NTZ
+    FROM scored
+    WHERE stddev_revenue IS NOT NULL
+        AND stddev_revenue > 0
+        AND ABS((revenue - avg_revenue) / stddev_revenue) > 3.0
+)
+SELECT
+    'SQL-STAT-' || LPAD(ROW_NUMBER() OVER (ORDER BY rule_name, advisor_id, month_end_date)::VARCHAR, 6, '0') AS detection_id,
+    rule_name,
+    detection_family,
+    performance_id,
+    account_id,
+    advisor_id,
+    branch_id,
+    firm_crd_number,
+    month_end_date,
+    field_name,
+    observed_value,
+    expected_condition,
+    severity,
+    explanation,
+    detected_at
+FROM raw_statistical_detections;

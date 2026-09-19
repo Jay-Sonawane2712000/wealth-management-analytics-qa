@@ -85,6 +85,12 @@ Hard-rule detection now identifies deterministic financial reporting issues in c
 
 This is the first detector layer. Statistical anomaly detection comes next, and evaluation against ground truth comes after both detection families exist.
 
+## Phase 3 Step 3: Statistical Anomaly Detection
+
+Statistical detection now identifies unusual AUM growth and revenue patterns using parameterized z-score and IQR rules. This detector family is separate from hard rules: it is designed for subtle changes that can look valid row by row but unusual in context.
+
+Precision and recall evaluation comes next, after both hard-rule and statistical-rule detections are available.
+
 ## Snowflake Setup Notes
 
 - Use an XS warehouse for this portfolio project.
@@ -128,4 +134,4 @@ wealth-management-analytics-qa/
 
 ## Current Status
 
-Phase 3, Step 2 adds deterministic hard-rule QA detection. Statistical anomaly detection, precision/recall evaluation, R modeling, Power BI assets, and Excel exports are intentionally not implemented yet.
+Phase 3, Step 3 adds statistical anomaly detection for AUM growth and revenue patterns. Precision/recall evaluation, R modeling, Power BI assets, and Excel exports are intentionally not implemented yet.

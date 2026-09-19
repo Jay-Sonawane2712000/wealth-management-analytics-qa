@@ -63,3 +63,13 @@ def test_qa_views_define_hard_rule_detection_results():
     assert "NEGATIVE_ENDING_AUM" in sql
     assert "DUPLICATE_ACCOUNT_MONTH" in sql
     assert "REVENUE_ON_CLOSED_ACCOUNT" in sql
+
+
+def test_qa_views_define_statistical_detection_results():
+    sql = _read_sql("sql/qa_views.sql")
+
+    assert "CREATE OR REPLACE VIEW QA.STATISTICAL_DETECTION_RESULTS" in sql
+    assert "LAG(" in sql
+    assert "ZSCORE_AUM_GROWTH_ANOMALY" in sql
+    assert "ZSCORE_REVENUE_ANOMALY" in sql
+    assert "STATISTICAL_RULE" in sql

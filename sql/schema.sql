@@ -136,8 +136,8 @@ CREATE TABLE IF NOT EXISTS QA.GROUND_TRUTH_INJECTED_ERRORS (
     INJECTED_AT TIMESTAMP_NTZ
 );
 
--- QA.DETECTION_RESULTS stores detected QA flags from hard-rule and future
--- statistical detectors. Later phases will score these rows against
+-- QA.DETECTION_RESULTS stores detected QA flags from both hard_rule and
+-- statistical_rule detectors. Later phases will score these rows against
 -- QA.GROUND_TRUTH_INJECTED_ERRORS.
 CREATE TABLE IF NOT EXISTS QA.DETECTION_RESULTS (
     DETECTION_ID VARCHAR,
