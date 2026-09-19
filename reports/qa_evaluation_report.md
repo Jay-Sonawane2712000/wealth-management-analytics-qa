@@ -6,12 +6,9 @@ This report summarizes how well hard-rule and statistical QA detections identify
 
 ## Ground Truth Summary
 
-Insert generated counts from `ground_truth_injected_errors.csv` here:
+The latest local run summary is written to `reports/generated_qa_summary.md`.
 
-- Total injected errors:
-- Hard-rule seeded errors:
-- Statistical-rule seeded errors:
-- Error types represented:
+Detailed generated CSV outputs are written under `data/qa/evaluation/`, `data/qa/detections/`, and `data/raw/synthetic_corrupted/`. Those CSVs are ignored by git so the repository keeps source and summary artifacts without committing generated raw data.
 
 ## Detection Families
 
@@ -33,11 +30,11 @@ F1 score balances precision and recall into one summary metric.
 
 ## Threshold Comparison
 
-Insert generated threshold-comparison metrics here. Compare z-score and IQR settings such as `z=2.0_iqr=1.5`, `z=2.5_iqr=2.0`, and `z=3.0_iqr=3.0`.
+The local pipeline compares z-score and IQR settings such as `z=2.0_iqr=1.5`, `z=2.5_iqr=2.0`, and `z=3.0_iqr=3.0`. The generated threshold comparison table is included in `reports/generated_qa_summary.md`.
 
 ## Selected Operating Threshold
 
-Document the selected threshold after reviewing the generated metrics. The selected threshold should balance reporting accuracy and reviewer workload.
+The selected operating threshold is generated from the local run using overall F1 score, with recall and precision used as tie-breakers. The selected threshold should balance reporting accuracy and reviewer workload.
 
 ## Reviewer Tradeoff
 
@@ -45,4 +42,4 @@ Lower thresholds may catch more injected issues but create more false positives.
 
 ## Current Status
 
-The evaluation framework is implemented. Final metric values should be inserted after running the local QA pipeline and reviewing the generated CSV outputs.
+The evaluation framework and local pipeline are implemented. Run `python -m qa.run_local_qa_pipeline` to refresh ignored detailed CSV outputs and the committed summary report.

@@ -267,9 +267,10 @@ def generate_all_synthetic_data(
     seed: int = 42,
     months: int = 12,
     validate: bool = True,
+    max_firms: int = 30,
 ) -> dict[str, pd.DataFrame]:
     """Generate all synthetic wealth-management datasets and optionally save them."""
-    firms = load_firm_seed_data(max_firms=30)
+    firms = load_firm_seed_data(max_firms=max_firms)
     branches = generate_branches(firms, seed=seed)
     advisors = generate_advisors(branches, seed=seed)
     accounts = generate_accounts(advisors, seed=seed)

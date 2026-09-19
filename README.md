@@ -97,6 +97,20 @@ Detection outputs can now be scored against seeded ground truth. The evaluation 
 
 Threshold comparison supports the core interview story: choosing a QA operating point based on the tradeoff between catching bad finance data and overwhelming reviewers. This completes the measured QA foundation.
 
+## Phase 3 Step 5: Local QA Pipeline Summary
+
+The local QA pipeline can now run end-to-end without Snowflake. It generates clean synthetic data, injects seeded errors, runs hard-rule and statistical detection, evaluates results, compares thresholds, and writes a portfolio-facing summary report.
+
+Detailed generated CSV outputs are ignored by git, while `reports/generated_qa_summary.md` is committed as the visible proof of the measured QA layer.
+
+## Run Local QA Pipeline
+
+```bash
+python -m qa.run_local_qa_pipeline
+```
+
+Generated raw and detailed CSVs under `data/raw/synthetic_corrupted/`, `data/qa/detections/`, and `data/qa/evaluation/` are ignored. The generated Markdown summary at `reports/generated_qa_summary.md` is committed.
+
 ## Snowflake Setup Notes
 
 - Use an XS warehouse for this portfolio project.
@@ -140,4 +154,4 @@ wealth-management-analytics-qa/
 
 ## Current Status
 
-Phase 3, Step 4 adds QA evaluation metrics and threshold comparison. R modeling, Power BI assets, and Excel exports are intentionally not implemented yet.
+Phase 3, Step 5 adds the end-to-end local QA run and generated portfolio summary. R modeling, Power BI assets, and Excel exports are intentionally not implemented yet.

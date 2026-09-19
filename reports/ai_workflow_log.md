@@ -80,6 +80,14 @@ Duplicate detections must not inflate true positives. One seeded ground-truth er
 
 Threshold comparison is the main depth story because it shows the tradeoff between catching more bad finance data and creating extra reviewer workload.
 
+### 2026-09-18 - Phase 3 Step 5 Local QA Summary
+
+We generated a committed summary report while keeping detailed generated CSVs ignored because the portfolio needs a readable proof artifact, not large generated data files in git.
+
+The default operating threshold is currently `z=2.5` and `iqr=2.0` because it is a moderate starting point between highly sensitive review settings and overly conservative settings.
+
+This threshold can be revised after reviewing actual precision, recall, false-positive rate, and reviewer workload tradeoffs from the generated threshold comparison.
+
 ## Validation Notes
 
 ## Next Steps
