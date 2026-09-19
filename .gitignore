@@ -36,6 +36,10 @@ data/interim/
 data/output/
 exports/
 *.xlsx
+!outputs/
+!outputs/excel/
+!outputs/excel/.gitkeep
+!outputs/excel/monthly_finance_report.xlsx
 *.parquet
 
 # Credentials and private config

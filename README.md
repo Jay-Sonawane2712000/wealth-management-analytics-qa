@@ -103,6 +103,12 @@ The local QA pipeline can now run end-to-end without Snowflake. It generates cle
 
 Detailed generated CSV outputs are ignored by git, while `reports/generated_qa_summary.md` is committed as the visible proof of the measured QA layer.
 
+## Phase 4 Step 1: Excel Stakeholder Report
+
+The project now exports a stakeholder-ready Excel workbook that combines clean financial KPI reporting with QA evaluation results. This connects the technical QA layer to finance and business partner reporting.
+
+The workbook is written to `outputs/excel/monthly_finance_report.xlsx` and includes executive summary, firm, branch, advisor, QA summary, and QA findings sample sheets.
+
 ## Run Local QA Pipeline
 
 ```bash
@@ -110,6 +116,14 @@ python -m qa.run_local_qa_pipeline
 ```
 
 Generated raw and detailed CSVs under `data/raw/synthetic_corrupted/`, `data/qa/detections/`, and `data/qa/evaluation/` are ignored. The generated Markdown summary at `reports/generated_qa_summary.md` is committed.
+
+## Export Excel Report
+
+```bash
+python -m reporting.export_excel
+```
+
+The generated workbook at `outputs/excel/monthly_finance_report.xlsx` is intended to be committed when reasonably small.
 
 ## Snowflake Setup Notes
 
@@ -154,4 +168,4 @@ wealth-management-analytics-qa/
 
 ## Current Status
 
-Phase 3, Step 5 adds the end-to-end local QA run and generated portfolio summary. R modeling, Power BI assets, and Excel exports are intentionally not implemented yet.
+Phase 4, Step 1 adds a stakeholder Excel finance report export. R modeling and Power BI assets are intentionally not implemented yet.

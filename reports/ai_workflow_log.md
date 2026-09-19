@@ -88,6 +88,14 @@ The default operating threshold is currently `z=2.5` and `iqr=2.0` because it is
 
 This threshold can be revised after reviewing actual precision, recall, false-positive rate, and reviewer workload tradeoffs from the generated threshold comparison.
 
+### 2026-09-18 - Phase 4 Step 1 Excel Stakeholder Report
+
+Excel export matters for corporate finance analytics roles because stakeholders often consume KPI summaries, controls, and QA outcomes in workbook form before a dashboard exists.
+
+The QA summary is included as a first-class sheet instead of hidden technical output because data quality is part of the business story, not just an engineering detail.
+
+The report uses local pipeline outputs before Snowflake or Power BI so the reporting workflow can be validated without external infrastructure.
+
 ## Validation Notes
 
 ## Next Steps
