@@ -104,6 +104,14 @@ The model includes limitations because synthetic data can demonstrate analysis w
 
 The output should not be oversold as production machine learning. It is exploratory finance analysis that supports the reporting and QA context while the seeded-error detection and evaluation layer remains the main technical depth.
 
+### 2026-09-20 - Phase 4 Step 3 Power BI-Ready Reporting Layer
+
+We are not claiming a finished Power BI dashboard because the repository does not contain a real `.pbix` file. The honest artifact at this stage is a Power BI-ready handoff layer: CSV exports, semantic model documentation, DAX measures, and a dashboard layout.
+
+CSV exports are useful because they let a reviewer manually build or inspect a dashboard prototype without Snowflake credentials, while keeping the output small enough for a portfolio repository.
+
+Snowflake remains the intended production reporting source because governed reporting should eventually read from warehouse views rather than local generated CSV files.
+
 ## Validation Notes
 
 ## Next Steps

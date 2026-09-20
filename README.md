@@ -115,6 +115,12 @@ The project now includes an R exploratory model for account-level monthly AUM gr
 
 The model is intentionally framed as exploratory analysis on synthetic project data that supports the seeded-error QA and finance reporting story. It is not production machine learning or a deployable forecasting model.
 
+## Phase 4 Step 3: Power BI-Ready Reporting Layer
+
+The project now includes a Power BI-ready reporting layer for finance KPIs and QA evaluation outputs. This repository does not claim a finished `.pbix` file; instead, it provides curated CSV exports, a semantic model guide, DAX measure definitions, and a dashboard layout specification.
+
+Local CSV exports support a manual Power BI prototype, while Snowflake reporting and analytics views remain the recommended future production source.
+
 ## Run Local QA Pipeline
 
 ```bash
@@ -138,6 +144,14 @@ Rscript r/advisor_aum_growth_model.R
 ```
 
 If the synthetic CSVs are missing, run `python -m ingestion.generate_synthetic` first. The R script writes a Markdown summary under `reports/` and optional diagnostic PNGs under `outputs/r/`.
+
+## Export Power BI CSVs
+
+```bash
+python -m reporting.export_powerbi_csvs
+```
+
+The generated CSVs under `outputs/powerbi/` are intentionally small and can be imported manually into Power BI Desktop using the guide in `reporting/powerbi/`.
 
 ## Snowflake Setup Notes
 
@@ -182,4 +196,4 @@ wealth-management-analytics-qa/
 
 ## Current Status
 
-Phase 4, Step 2 adds an exploratory R AUM growth analysis artifact. Power BI assets are intentionally not implemented yet.
+Phase 4, Step 3 adds a Power BI-ready reporting layer with curated CSV exports, DAX measures, and dashboard build documentation. A finished `.pbix` is intentionally not claimed or committed.

@@ -1,0 +1,12 @@
+evaluation_scope,detection_family,rule_name,threshold_label,true_positives,false_positives,false_negatives,ground_truth_count,detection_count,precision,recall,false_positive_rate,f1_score,evaluated_at
+overall,all,all,z=2.5_iqr=2.0,32,2763,8,40,2795,0.01144901610017889,0.8,0.9885509838998211,0.02257495590828924,2026-01-22T00:00:00
+detection_family,hard_rule,all,z=2.5_iqr=2.0,25,6,0,25,31,0.8064516129032258,1.0,0.1935483870967742,0.8928571428571428,2026-01-22T00:00:00
+detection_family,statistical_rule,all,z=2.5_iqr=2.0,7,2757,8,15,2764,0.002532561505065123,0.4666666666666667,0.9974674384949349,0.005037783375314861,2026-01-22T00:00:00
+rule,hard_rule,duplicate_account_month,z=2.5_iqr=2.0,5,5,0,5,10,0.5,1.0,0.5,0.6666666666666666,2026-01-22T00:00:00
+rule,hard_rule,invalid_fee_rate_high,z=2.5_iqr=2.0,5,0,0,5,5,1.0,1.0,0.0,1.0,2026-01-22T00:00:00
+rule,statistical_rule,iqr_aum_growth_anomaly,z=2.5_iqr=2.0,2,2243,0,10,2245,0.0008908685968819599,1.0,0.9991091314031181,0.0017801513128615932,2026-01-22T00:00:00
+rule,statistical_rule,iqr_revenue_anomaly,z=2.5_iqr=2.0,0,397,0,5,397,0.0,0.0,1.0,0.0,2026-01-22T00:00:00
+rule,hard_rule,negative_ending_aum,z=2.5_iqr=2.0,5,0,0,5,5,1.0,1.0,0.0,1.0,2026-01-22T00:00:00
+rule,hard_rule,negative_revenue,z=2.5_iqr=2.0,5,0,0,5,5,1.0,1.0,0.0,1.0,2026-01-22T00:00:00
+rule,hard_rule,revenue_on_closed_account,z=2.5_iqr=2.0,5,1,0,5,6,0.8333333333333334,1.0,0.16666666666666666,0.9090909090909091,2026-01-22T00:00:00
+rule,statistical_rule,zscore_revenue_anomaly,z=2.5_iqr=2.0,5,117,0,5,122,0.040983606557377046,1.0,0.9590163934426229,0.07874015748031496,2026-01-22T00:00:00

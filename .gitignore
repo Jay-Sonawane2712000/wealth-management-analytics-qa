@@ -42,6 +42,9 @@ exports/
 !outputs/excel/monthly_finance_report.xlsx
 outputs/r/*.png
 !outputs/r/.gitkeep
+!outputs/powerbi/
+!outputs/powerbi/.gitkeep
+!outputs/powerbi/*.csv
 *.parquet
 
 # Credentials and private config
