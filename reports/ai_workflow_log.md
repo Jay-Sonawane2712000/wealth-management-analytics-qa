@@ -112,6 +112,14 @@ CSV exports are useful because they let a reviewer manually build or inspect a d
 
 Snowflake remains the intended production reporting source because governed reporting should eventually read from warehouse views rather than local generated CSV files.
 
+### 2026-09-20 - Phase 5 Step 1 Portfolio Communication Polish
+
+This phase focused on portfolio communication and interview readiness rather than adding another core feature.
+
+The README was reorganized around business value and the measured QA depth story: seeded ground truth, hard-rule and statistical detection, precision/recall evaluation, and reviewer workload tradeoffs.
+
+Limitations were kept explicit to avoid overselling. The repo still does not claim a live Snowflake deployment or a finished Power BI `.pbix` file.
+
 ## Validation Notes
 
 ## Next Steps
