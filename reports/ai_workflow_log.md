@@ -96,6 +96,14 @@ The QA summary is included as a first-class sheet instead of hidden technical ou
 
 The report uses local pipeline outputs before Snowflake or Power BI so the reporting workflow can be validated without external infrastructure.
 
+### 2026-09-20 - Phase 4 Step 2 R AUM Growth Analysis
+
+R is used for a focused statistical analysis artifact rather than the whole pipeline because the project's main system logic already lives in Python and SQL. This keeps R in the role where it is strongest for the portfolio story: concise model summaries, confidence intervals, and residual diagnostics.
+
+The model includes limitations because synthetic data can demonstrate analysis workflow but cannot support real-world adviser behavior claims.
+
+The output should not be oversold as production machine learning. It is exploratory finance analysis that supports the reporting and QA context while the seeded-error detection and evaluation layer remains the main technical depth.
+
 ## Validation Notes
 
 ## Next Steps

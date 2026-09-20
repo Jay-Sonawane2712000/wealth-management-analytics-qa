@@ -109,6 +109,12 @@ The project now exports a stakeholder-ready Excel workbook that combines clean f
 
 The workbook is written to `outputs/excel/monthly_finance_report.xlsx` and includes executive summary, firm, branch, advisor, QA summary, and QA findings sample sheets.
 
+## Phase 4 Step 2: R AUM Growth Analysis
+
+The project now includes an R exploratory model for account-level monthly AUM growth. The analysis reports model coefficients, confidence intervals, residual diagnostics, and limitations in `reports/r_aum_growth_model_summary.md`.
+
+The model is intentionally framed as exploratory analysis on synthetic project data that supports the seeded-error QA and finance reporting story. It is not production machine learning or a deployable forecasting model.
+
 ## Run Local QA Pipeline
 
 ```bash
@@ -124,6 +130,14 @@ python -m reporting.export_excel
 ```
 
 The generated workbook at `outputs/excel/monthly_finance_report.xlsx` is intended to be committed when reasonably small.
+
+## Run R AUM Growth Analysis
+
+```bash
+Rscript r/advisor_aum_growth_model.R
+```
+
+If the synthetic CSVs are missing, run `python -m ingestion.generate_synthetic` first. The R script writes a Markdown summary under `reports/` and optional diagnostic PNGs under `outputs/r/`.
 
 ## Snowflake Setup Notes
 
@@ -168,4 +182,4 @@ wealth-management-analytics-qa/
 
 ## Current Status
 
-Phase 4, Step 1 adds a stakeholder Excel finance report export. R modeling and Power BI assets are intentionally not implemented yet.
+Phase 4, Step 2 adds an exploratory R AUM growth analysis artifact. Power BI assets are intentionally not implemented yet.

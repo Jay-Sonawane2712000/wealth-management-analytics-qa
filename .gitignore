@@ -40,6 +40,8 @@ exports/
 !outputs/excel/
 !outputs/excel/.gitkeep
 !outputs/excel/monthly_finance_report.xlsx
+outputs/r/*.png
+!outputs/r/.gitkeep
 *.parquet
 
 # Credentials and private config
