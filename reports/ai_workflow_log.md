@@ -122,6 +122,14 @@ The README was reorganized around business value and the measured QA depth story
 
 Limitations were kept explicit to avoid overselling. The repo still does not claim a live Snowflake deployment or a finished Power BI `.pbix` file.
 
+### 2026-09-20 - Phase 5 Step 2 SEC ADV Local File Ingestion
+
+The SEC ADV ingestion path was strengthened around user-supplied official/local CSV files instead of web scraping. Local-file ingestion is more reproducible for this portfolio project, avoids brittle site automation and paid data dependencies, and lets the operator preserve the provenance of an official export while applying transparent column normalization, state filtering, deterministic sampling, AUM sorting, and quality checks.
+
+Raw official SEC/IAPD files remain untracked because they can be large and independently refreshed. Normalized processed CSVs are reproducible and ignored as well. The committed quality report is generated from clearly labeled development sample rows, not official SEC output.
+
+The governance boundary is unchanged: supplied SEC/IAPD data is real public firm-level information, while branch, advisor, account, and monthly performance records remain synthetic private-style data. This workflow does not claim live scraping, a full adviser-universe ingestion, or production deployment.
+
 ## Validation Notes
 
 ## Next Steps

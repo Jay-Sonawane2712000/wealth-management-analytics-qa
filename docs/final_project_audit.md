@@ -10,7 +10,7 @@ Passed:
 python -m pytest
 ```
 
-Result observed during final audit: `126 passed`.
+Result observed during final audit: `134 passed`.
 
 ## Pipeline Command Status
 
@@ -67,6 +67,8 @@ This executed an exploratory analysis of synthetic wealth-management performance
 - [x] `reports/generated_qa_summary.md`
 - [x] `reports/qa_evaluation_report.md`
 - [x] `reports/r_aum_growth_model_summary.md`
+- [x] `reports/sec_adv_ingestion_quality.md` (generated from development sample data)
+- [x] `docs/sec_adv_ingestion_guide.md`
 - [x] `outputs/r/residuals_vs_fitted.png`
 - [x] `outputs/r/aum_growth_by_segment.png`
 - [x] `outputs/excel/monthly_finance_report.xlsx`
@@ -88,7 +90,7 @@ This executed an exploratory analysis of synthetic wealth-management performance
 - [x] The repository does not claim that a finished Power BI `.pbix` file is included.
 - [x] The repository does not claim live Snowflake execution in CI or in this local audit.
 - [x] Advisor, account, branch, and monthly performance data are described as synthetic private-style data.
-- [x] SEC ADV/IAPD firm data is described as public real firm-level data or as a bounded/scaffolded ingestion path.
+- [x] SEC ADV/IAPD firm data is described as public real firm-level data or as a bounded local-file ingestion path.
 - [x] The main portfolio story is measured QA using seeded errors, ground truth, precision, recall, false-positive rate, and threshold tradeoffs.
 - [x] Ignored generated QA CSVs may exist locally after command runs, but they are not intended to be committed.
 
@@ -105,6 +107,7 @@ Allowed committed outputs:
 Ignored generated outputs checked during audit:
 
 - `data/raw/synthetic_corrupted/*.csv`
+- `data/raw/sec_adv/*.csv`
 - `data/qa/detections/*.csv`
 - `data/qa/evaluation/*.csv`
 - `data/raw/synthetic/*.csv`
@@ -118,13 +121,13 @@ Private files such as `.env` should remain untracked.
 - No `.pbix` file is committed.
 - The R analysis was executed locally with `C:\Program Files\R\R-4.6.1\bin\Rscript.exe`; Rscript is not claimed to be on `PATH`, and reproducing it elsewhere requires local R plus the documented packages.
 - The R model is exploratory analysis on synthetic wealth-management performance data, not production predictive machine learning.
-- SEC ADV ingestion is bounded/scaffolded for portfolio use, not a full production-scale adviser scrape.
+- SEC ADV ingestion supports local official CSV normalization, filtering, sampling, and quality reporting; raw official files are not committed.
 - Current QA metrics show high recall but low precision, so statistical detector tuning is a future improvement area.
 
 ## Next Optional Improvements
 
 - Run the full SQL stack in a real Snowflake trial with cost controls.
 - Tune statistical anomaly thresholds and grouping logic to improve precision.
-- Ingest an official SEC ADV/IAPD export file through the bounded ingestion interface.
+- Exercise the local ingestion interface with a current official SEC ADV/IAPD export when one is supplied, without committing the raw file.
 - Build a real Power BI Desktop `.pbix` from the documented model and CSV exports.
 - Add orchestration for repeatable local runs.

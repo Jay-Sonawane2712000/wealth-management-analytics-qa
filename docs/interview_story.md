@@ -44,7 +44,7 @@ The project is intentionally honest about QA tradeoffs. A detector with high rec
 - Tune statistical thresholds and add better grouping logic to improve precision.
 - Add model features that distinguish market-driven movement from data quality anomalies.
 - Run the SQL objects in a real Snowflake environment.
-- Ingest an official SEC ADV file instead of only using a bounded local scaffold.
+- Exercise the strengthened local ingestion workflow with a current official SEC ADV/IAPD export supplied by the user, while keeping the raw file untracked.
 - Build and commit a real Power BI `.pbix` once the model is finalized.
 - Add orchestration and scheduled refresh around the local pipeline.
 

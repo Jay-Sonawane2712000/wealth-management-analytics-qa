@@ -22,6 +22,8 @@ ENV/
 .ipynb_checkpoints/
 
 # Data outputs
+data/raw/sec_adv/*.csv
+!data/raw/sec_adv/.gitkeep
 !data/processed/.gitkeep
 data/processed/*.csv
 data/raw/synthetic/*.csv

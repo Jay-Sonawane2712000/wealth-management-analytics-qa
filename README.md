@@ -56,7 +56,7 @@ Public SEC ADV firm data + synthetic private-style performance data
     -> Excel workbook + Power BI-ready reporting layer
 ```
 
-The local pipeline can run without Snowflake, while the SQL assets and loader scaffold show how the same design maps to a future Snowflake warehouse.
+The local pipeline can run without Snowflake. The SEC ADV workflow can normalize, filter, sample, and quality-profile a user-supplied official/local CSV, while the SQL assets and loader scaffold show how the same design maps to a future Snowflake warehouse. It does not scrape the web or claim a completed full-universe production ingestion.
 
 ## Data Boundary and Governance
 
@@ -73,7 +73,7 @@ Python, pandas, Snowflake SQL, pytest, R, Excel export, Power BI-ready CSVs/docs
 
 ## Repository Map
 
-- `ingestion/`: SEC ADV ingestion scaffold, Snowflake loader scaffold, and synthetic wealth-management data generator.
+- `ingestion/`: offline SEC ADV local-file normalization and quality profiling, Snowflake loader scaffold, and synthetic wealth-management data generator.
 - `qa/`: seeded error injection, hard-rule detection, statistical anomaly detection, evaluation metrics, and local QA pipeline.
 - `sql/`: Snowflake schema, KPI views, and QA reporting views.
 - `reporting/`: Excel export and Power BI-ready export/documentation layer.
@@ -96,6 +96,20 @@ Run the local QA pipeline:
 ```bash
 python -m qa.run_local_qa_pipeline
 ```
+
+Normalize a user-supplied official/local SEC ADV CSV:
+
+```bash
+python -m ingestion.fetch_sec_adv --input data/raw/sec_adv/my_file.csv --state AZ --max-rows 300
+```
+
+Or exercise the same interface with clearly labeled development sample data:
+
+```bash
+python -m ingestion.fetch_sec_adv --use-sample --max-rows 30
+```
+
+See the [SEC ADV local ingestion guide](docs/sec_adv_ingestion_guide.md) for input handling, quality reporting, and governance details.
 
 Export the stakeholder Excel workbook:
 
@@ -124,6 +138,8 @@ The exploratory analysis has been executed locally with that full Rscript path a
 - [Power BI-ready CSV exports](outputs/powerbi/)
 - [Power BI handoff guide](reporting/powerbi/README.md)
 - [QA evaluation report](reports/qa_evaluation_report.md)
+- [SEC ADV ingestion quality report](reports/sec_adv_ingestion_quality.md)
+- [SEC ADV local ingestion guide](docs/sec_adv_ingestion_guide.md)
 - [R AUM growth model script](r/advisor_aum_growth_model.R)
 - [Generated R AUM growth model summary](reports/r_aum_growth_model_summary.md)
 - [R diagnostic plots](outputs/r/)
@@ -145,6 +161,6 @@ The exploratory analysis has been executed locally with that full Rscript path a
 
 - No production Snowflake account is connected in CI.
 - No finished `.pbix` file is included or claimed.
-- SEC ingestion is bounded and scaffolded rather than a full adviser-universe scrape.
+- SEC ADV ingestion supports user-supplied official/local CSV normalization, filtering, sampling, and quality reporting; it performs no scraping, and raw official files are not committed.
 - The R analysis is exploratory, uses synthetic wealth-management performance data, and is not production predictive machine learning.
-- Future work includes running the Snowflake pipeline end to end, ingesting a live SEC file, tuning statistical thresholds, and building a real Power BI dashboard file.
+- Future work includes running the Snowflake pipeline end to end, exercising local ingestion with a current official SEC/IAPD export supplied by the user, tuning statistical thresholds, and building a real Power BI dashboard file.
