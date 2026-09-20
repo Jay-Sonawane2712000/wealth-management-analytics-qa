@@ -40,7 +40,6 @@ exports/
 !outputs/excel/
 !outputs/excel/.gitkeep
 !outputs/excel/monthly_finance_report.xlsx
-outputs/r/*.png
 !outputs/r/.gitkeep
 !outputs/powerbi/
 !outputs/powerbi/.gitkeep

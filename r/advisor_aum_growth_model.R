@@ -143,7 +143,7 @@ residual_plot <- ggplot(augmented, aes(x = .fitted, y = .resid)) +
   theme_minimal()
 
 segment_plot <- ggplot(model_data, aes(x = client_segment, y = aum_growth_rate)) +
-  geom_boxplot(fill = "#D9EAF7", color = "#2F5D7C", outlier_alpha = 0.25) +
+  geom_boxplot(fill = "#D9EAF7", color = "#2F5D7C", outlier.alpha = 0.25) +
   labs(
     title = "Monthly AUM Growth by Client Segment",
     x = "Client segment",

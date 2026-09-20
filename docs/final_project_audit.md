@@ -10,7 +10,7 @@ Passed:
 python -m pytest
 ```
 
-Result observed during final audit: `125 passed`.
+Result observed during final audit: `126 passed`.
 
 ## Pipeline Command Status
 
@@ -54,12 +54,21 @@ Outputs verified:
 - `outputs/powerbi/qa_metrics.csv`
 - `outputs/powerbi/qa_threshold_comparison.csv`
 
-R was not required for final audit because the README documents that it requires a local R installation and packages.
+Passed locally using the installed executable's full path (Rscript is not assumed to be on `PATH`):
+
+```powershell
+& "C:\Program Files\R\R-4.6.1\bin\Rscript.exe" r/advisor_aum_growth_model.R
+```
+
+This executed an exploratory analysis of synthetic wealth-management performance data and generated a Markdown model summary plus two small diagnostic plots. It is not a production predictive machine-learning model.
 
 ## Artifact Checklist
 
 - [x] `reports/generated_qa_summary.md`
 - [x] `reports/qa_evaluation_report.md`
+- [x] `reports/r_aum_growth_model_summary.md`
+- [x] `outputs/r/residuals_vs_fitted.png`
+- [x] `outputs/r/aum_growth_by_segment.png`
 - [x] `outputs/excel/monthly_finance_report.xlsx`
 - [x] `outputs/powerbi/advisor_kpis.csv`
 - [x] `outputs/powerbi/branch_kpis.csv`
@@ -89,7 +98,9 @@ Allowed committed outputs:
 
 - `outputs/excel/monthly_finance_report.xlsx`
 - `outputs/powerbi/*.csv`
+- `outputs/r/*.png`
 - `reports/generated_qa_summary.md`
+- `reports/r_aum_growth_model_summary.md`
 
 Ignored generated outputs checked during audit:
 
@@ -105,7 +116,8 @@ Private files such as `.env` should remain untracked.
 
 - Snowflake schema and loader scaffolds exist, but live Snowflake execution depends on user credentials and a Snowflake account or trial.
 - No `.pbix` file is committed.
-- The R script requires local R and package installation.
+- The R analysis was executed locally with `C:\Program Files\R\R-4.6.1\bin\Rscript.exe`; Rscript is not claimed to be on `PATH`, and reproducing it elsewhere requires local R plus the documented packages.
+- The R model is exploratory analysis on synthetic wealth-management performance data, not production predictive machine learning.
 - SEC ADV ingestion is bounded/scaffolded for portfolio use, not a full production-scale adviser scrape.
 - Current QA metrics show high recall but low precision, so statistical detector tuning is a future improvement area.
 

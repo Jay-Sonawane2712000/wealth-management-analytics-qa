@@ -104,6 +104,8 @@ The model includes limitations because synthetic data can demonstrate analysis w
 
 The output should not be oversold as production machine learning. It is exploratory finance analysis that supports the reporting and QA context while the seeded-error detection and evaluation layer remains the main technical depth.
 
+The analysis was executed locally with `C:\Program Files\R\R-4.6.1\bin\Rscript.exe` rather than relying on Rscript being available on `PATH`. The run produced `reports/r_aum_growth_model_summary.md` with real fitted-model output and the small diagnostic plots in `outputs/r/`. The generated raw synthetic CSV inputs remain ignored and are not committed.
+
 ### 2026-09-20 - Phase 4 Step 3 Power BI-Ready Reporting Layer
 
 We are not claiming a finished Power BI dashboard because the repository does not contain a real `.pbix` file. The honest artifact at this stage is a Power BI-ready handoff layer: CSV exports, semantic model documentation, DAX measures, and a dashboard layout.

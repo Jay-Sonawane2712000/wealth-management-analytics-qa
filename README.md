@@ -109,13 +109,13 @@ Export Power BI-ready CSVs:
 python -m reporting.export_powerbi_csvs
 ```
 
-Run the optional R analysis:
+Run the optional R analysis locally on Windows with the installed R executable (Rscript is not assumed to be on `PATH`):
 
-```bash
-Rscript r/advisor_aum_growth_model.R
+```powershell
+& "C:\Program Files\R\R-4.6.1\bin\Rscript.exe" r/advisor_aum_growth_model.R
 ```
 
-The R script requires a local R installation and the packages listed in [r/README.md](r/README.md).
+The exploratory analysis has been executed locally with that full Rscript path against synthetic wealth-management performance data. It generated the committed [R AUM growth model summary](reports/r_aum_growth_model_summary.md) and small diagnostic plots under [`outputs/r/`](outputs/r/). The script requires the packages listed in [r/README.md](r/README.md).
 
 ## Portfolio Artifacts
 
@@ -125,6 +125,8 @@ The R script requires a local R installation and the packages listed in [r/READM
 - [Power BI handoff guide](reporting/powerbi/README.md)
 - [QA evaluation report](reports/qa_evaluation_report.md)
 - [R AUM growth model script](r/advisor_aum_growth_model.R)
+- [Generated R AUM growth model summary](reports/r_aum_growth_model_summary.md)
+- [R diagnostic plots](outputs/r/)
 - [Interview story](docs/interview_story.md)
 - [Architecture document](docs/architecture.md)
 - [Snowflake runbook](docs/snowflake_runbook.md)
@@ -144,5 +146,5 @@ The R script requires a local R installation and the packages listed in [r/READM
 - No production Snowflake account is connected in CI.
 - No finished `.pbix` file is included or claimed.
 - SEC ingestion is bounded and scaffolded rather than a full adviser-universe scrape.
-- The R script is designed for local execution and may require installing R packages.
+- The R analysis is exploratory, uses synthetic wealth-management performance data, and is not production predictive machine learning.
 - Future work includes running the Snowflake pipeline end to end, ingesting a live SEC file, tuning statistical thresholds, and building a real Power BI dashboard file.
