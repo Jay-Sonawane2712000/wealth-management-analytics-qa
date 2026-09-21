@@ -43,10 +43,45 @@ Required values:
    python -m ingestion.load_sec_adv_to_snowflake
    ```
 
-5. Load synthetic tables only after deciding which generated CSVs should be uploaded.
-6. Run `sql/kpi_views.sql`.
-7. Run `sql/qa_views.sql`.
-8. Run local QA evaluation and compare outputs before wiring reports to Snowflake.
+5. Validate the complete generated-data load without connecting:
+
+   ```bash
+   python -m ingestion.load_project_data_to_snowflake --dry-run
+   ```
+
+6. When the dry-run passes and every destination table is empty, run the live bulk load:
+
+   ```bash
+   python -m ingestion.load_project_data_to_snowflake
+   ```
+
+7. Deploy and verify the KPI and QA views with the reusable structured-SQL runner:
+
+   ```bash
+   python -m ingestion.deploy_snowflake_views
+   ```
+
+8. Compare warehouse QA outputs with the local evaluation reports before wiring stakeholder reporting to Snowflake.
+
+## Generated Project Data Loader
+
+`ingestion/load_project_data_to_snowflake.py` validates all configured CSV headers and values before opening a Snowflake connection. The dry-run parses dates, timestamps, numbers, integers, booleans, blank values, and synthetic lineage labels, then reports planned rows per destination table.
+
+The live command uses `snowflake.connector.pandas_tools.write_pandas` for bulk loading. Before the first write, it checks every configured destination table and refuses the entire load if any table contains rows. This is a duplicate-prevention guard, not an upsert workflow. It never truncates, replaces, or deletes existing data.
+
+Configured destinations:
+
+- `RAW.SYNTHETIC_BRANCHES`
+- `RAW.SYNTHETIC_ADVISORS`
+- `RAW.SYNTHETIC_ACCOUNTS`
+- `RAW.SYNTHETIC_MONTHLY_PERFORMANCE`
+- `RAW.SYNTHETIC_MONTHLY_PERFORMANCE_CORRUPTED`
+- `QA.GROUND_TRUTH_INJECTED_ERRORS`
+- `QA.DETECTION_RESULTS` (combined hard-rule and statistical detections)
+- `QA.EVALUATION_METRICS` (threshold comparison metrics)
+- `QA.DETECTION_GROUND_TRUTH_MATCHES`
+
+After loading, the command re-counts every target and reports loaded and verified row counts. Keep the warehouse at the smallest practical size and allow auto-suspend to stop it after the command finishes.
 
 ## What Should Be Uploaded
 
@@ -69,9 +104,12 @@ Do not upload:
 - Permission errors: verify the role can create warehouses, databases, schemas, tables, and views.
 - Warehouse cost concerns: use XS warehouse, keep `AUTO_SUSPEND=60`, and manually suspend after testing.
 - Table not found: run `sql/schema.sql` before loader or view scripts.
-- Empty local data: run the synthetic generator before loading synthetic-style records.
+- Empty or missing local data: regenerate the synthetic and QA output files, then rerun the dry-run before any live load.
 - Import mismatch: confirm CSV column names match the SQL table definitions and loader expectations.
+- Nonempty target refusal: inspect the reported table counts. The loader intentionally does not append, truncate, or deduplicate an existing target.
 
 ## Current Status
 
-The repo includes Snowflake DDL and a credential-safe loader scaffold, but CI does not run against a live Snowflake account. Live execution should be treated as a future deployment step.
+The complete workflow was executed successfully in a Snowflake Standard trial on Azure West US 2. It loaded 30 public SEC ADV firm rows and 310,275 synthetic/QA rows across nine destinations, then deployed and verified all seven KPI, reporting, and QA views. `ANALYTICS_WH` was suspended after execution. See [the live execution report](../reports/snowflake_live_execution.md) for verified counts and interpretation.
+
+Live Snowflake remains intentionally excluded from CI because credentials must remain local, trial availability is temporary, and warehouse execution can incur cost. CI-safe coverage uses offline dry-runs and mocked connector tests instead.

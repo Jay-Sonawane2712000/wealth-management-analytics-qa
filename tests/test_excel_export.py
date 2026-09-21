@@ -37,24 +37,31 @@ def test_export_monthly_finance_report_writes_xlsx_file(excel_output_path):
 
 def test_workbook_contains_expected_sheet_names(excel_output_path):
     workbook = load_workbook(excel_output_path, read_only=True)
-
-    assert EXPECTED_SHEETS.issubset(set(workbook.sheetnames))
+    try:
+        assert EXPECTED_SHEETS.issubset(set(workbook.sheetnames))
+    finally:
+        workbook.close()
 
 
 def test_executive_summary_contains_key_labels(excel_output_path):
     workbook = load_workbook(excel_output_path, read_only=True)
-    sheet = workbook["Executive Summary"]
-    labels = {sheet.cell(row=row, column=1).value for row in range(1, sheet.max_row + 1)}
+    try:
+        sheet = workbook["Executive Summary"]
+        labels = {sheet.cell(row=row, column=1).value for row in range(1, sheet.max_row + 1)}
 
-    assert "Total revenue" in labels
-    assert "Overall QA precision" in labels
-    assert "Overall QA recall" in labels
+        assert "Total revenue" in labels
+        assert "Overall QA precision" in labels
+        assert "Overall QA recall" in labels
+    finally:
+        workbook.close()
 
 
 def test_qa_summary_sheet_exists(excel_output_path):
     workbook = load_workbook(excel_output_path, read_only=True)
-
-    assert "QA Summary" in workbook.sheetnames
+    try:
+        assert "QA Summary" in workbook.sheetnames
+    finally:
+        workbook.close()
 
 
 def test_generated_report_data_includes_financial_kpis_and_qa_metrics():

@@ -44,6 +44,12 @@ Selected operating threshold: `z=3.0_iqr=3.0`.
 
 The key business interpretation is that the current statistical detector configuration catches most seeded issues, but it creates a high reviewer workload. That is intentional for the portfolio story: the project makes the tradeoff visible instead of hiding it.
 
+## Live Snowflake Deployment
+
+The workflow was executed successfully in a Snowflake Standard trial on Azure West US 2 using a custom least-privilege role and an X-Small warehouse. It loaded 30 public SEC ADV firm rows plus 310,275 synthetic/QA rows across nine tables, deployed and verified seven analytics/reporting/QA views, and suspended the warehouse after execution. Credentials remained local and live Snowflake is excluded from CI because of secrets, trial availability, and cost.
+
+See the [live Snowflake execution report](reports/snowflake_live_execution.md) for verified table counts, view results, baseline health checks, and detection interpretation.
+
 ## Architecture
 
 ```text
@@ -138,6 +144,7 @@ The exploratory analysis has been executed locally with that full Rscript path a
 - [Power BI-ready CSV exports](outputs/powerbi/)
 - [Power BI handoff guide](reporting/powerbi/README.md)
 - [QA evaluation report](reports/qa_evaluation_report.md)
+- [Live Snowflake execution report](reports/snowflake_live_execution.md)
 - [SEC ADV ingestion quality report](reports/sec_adv_ingestion_quality.md)
 - [SEC ADV local ingestion guide](docs/sec_adv_ingestion_guide.md)
 - [R AUM growth model script](r/advisor_aum_growth_model.R)
