@@ -32,11 +32,11 @@ def test_readme_mentions_precision_and_recall():
     assert "recall" in readme
 
 
-def test_readme_does_not_claim_pbix_exists():
+def test_readme_documents_pbix():
     readme = README.read_text(encoding="utf-8").lower()
 
-    assert "no finished `.pbix` file is included or claimed" in readme
-    assert "finished .pbix exists" not in readme
+    assert "completed power bi report" in readme
+    assert "wealth_management_analytics_qa.pbix" in readme
 
 
 def test_portfolio_docs_exist():

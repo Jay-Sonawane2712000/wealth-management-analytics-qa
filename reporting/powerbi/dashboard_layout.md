@@ -1,8 +1,8 @@
 # Power BI Dashboard Layout
 
-This is a build specification for a future Power BI report. No `.pbix` file is included in this repository.
+This documents the implemented page structure in `outputs/powerbi/wealth_management_analytics_qa.pbix`.
 
-## Page 1: Executive Finance Overview
+## Page 1: Executive Overview
 
 Purpose: summarize the clean baseline financial reporting story for business stakeholders.
 
@@ -20,7 +20,7 @@ Suggested slicers:
 - Firm CRD number
 - Branch region
 
-## Page 2: Advisor / Branch Performance
+## Page 2: Advisor Performance
 
 Purpose: support performance review across advisors and branches.
 
@@ -38,7 +38,7 @@ Suggested slicers:
 - Advisor
 - Firm
 
-## Page 3: QA & Anomaly Review
+## Page 3: QA Review
 
 Purpose: make QA evaluation a first-class business reporting view instead of hidden technical output.
 

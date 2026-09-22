@@ -2,14 +2,15 @@
 
 ## Purpose
 
-This folder documents the Power BI-ready reporting layer for the wealth-management analytics QA project. It is meant to help a reviewer or analyst build a manual Power BI prototype from local CSV exports now, and later connect Power BI to Snowflake reporting or analytics views.
+This folder documents the completed Power BI reporting layer for the wealth-management analytics QA project.
 
 ## Current Status
 
-This repo currently provides a Power BI-ready reporting layer. A finished `.pbix` file is not included or claimed.
+The completed report is `outputs/powerbi/wealth_management_analytics_qa.pbix`. It contains three pages: Executive Overview, Advisor Performance, and QA Review.
 
 The current deliverables are:
 
+- The completed PBIX report
 - Local CSV exports under `outputs/powerbi/`
 - A data dictionary for the exported tables
 - DAX measure definitions
@@ -25,15 +26,21 @@ Current local prototype source:
 - `outputs/powerbi/qa_metrics.csv`
 - `outputs/powerbi/qa_threshold_comparison.csv`
 
-Recommended future production source:
+The deployed Snowflake model is an optional source for a separately configured Snowflake-backed version:
 
-- Snowflake analytics/reporting views built from `RAW.SEC_ADV_FIRMS`, `RAW.SYNTHETIC_*`, and QA evaluation tables.
+- `ANALYTICS.ADVISOR_MONTHLY_KPIS`
+- `ANALYTICS.BRANCH_MONTHLY_KPIS`
+- `ANALYTICS.FIRM_MONTHLY_KPIS`
+- `REPORTING.EXECUTIVE_MONTHLY_SUMMARY`
+- `QA.BASELINE_DATA_HEALTH_SUMMARY`
+- `QA.HARD_RULE_DETECTION_RESULTS`
+- `QA.STATISTICAL_DETECTION_RESULTS`
 
 ## Recommended Power BI Import Mode
 
 For the local portfolio prototype, use Import mode with the CSV files in `outputs/powerbi/`.
 
-For a future Snowflake-backed version, use Import mode for a small portfolio demo or DirectQuery only if a live warehouse and refresh governance are intentionally configured. This repository does not connect to Snowflake during this step.
+For a Snowflake-backed version, use Import mode for a small portfolio demo or DirectQuery only when a live warehouse, credentials, permissions, gateway, refresh schedule, and cost controls are intentionally configured.
 
 ## Table Relationships
 
@@ -56,11 +63,11 @@ Column and table names may need adjustment depending on the final import names P
 
 ## Dashboard Pages
 
-Use `dashboard_layout.md` for the dashboard wireframe. The intended pages are:
+The implemented pages are:
 
-1. Executive Finance Overview
-2. Advisor / Branch Performance
-3. QA & Anomaly Review
+1. Executive Overview
+2. Advisor Performance
+3. QA Review
 
 ## Refresh Notes
 
@@ -70,21 +77,21 @@ Generate local CSVs with:
 python -m reporting.export_powerbi_csvs
 ```
 
-Then refresh the imported CSVs in Power BI Desktop. Generated raw synthetic CSVs remain ignored; the curated Power BI exports are intentionally small and portfolio-friendly.
+Then open `outputs/powerbi/wealth_management_analytics_qa.pbix` in Power BI Desktop and select **Home > Refresh**. If Power BI cannot find the CSVs because the repository moved, use **File > Options and settings > Data source settings**, select each CSV source, choose **Change Source**, and point it to the matching file under `outputs/powerbi/`. Apply changes, refresh again, and verify all three pages render without visual errors.
 
-## Manual Build Steps
+## Snowflake Prerequisites
 
-1. Run `python -m reporting.export_powerbi_csvs`.
-2. Open Power BI Desktop.
-3. Import the five CSV files from `outputs/powerbi/`.
-4. Confirm data types for dates, numeric KPI fields, and percentage fields.
-5. Create relationships using the relationship guide above.
-6. Add measures from `dax_measures.md`.
-7. Build pages using `dashboard_layout.md`.
-8. Add a text note that the dashboard is based on synthetic local exports unless connected to Snowflake later.
+The committed PBIX does not require Snowflake for its normal local CSV refresh. A Snowflake-backed variant requires the schema and data loaders to have completed, all seven views to exist, `ANALYTICS_WH` access through `WEALTH_ANALYTICS_ROLE`, and local credentials in an ignored `.env`. Do not put credentials in the PBIX or repository. Suspend the warehouse after validation.
+
+## Final Validation Workflow
+
+1. Run `python -m pytest`.
+2. Run `python -m ingestion.load_project_data_to_snowflake --dry-run` to validate loader inputs without connecting.
+3. Run `python -m reporting.export_powerbi_csvs`.
+4. Open the PBIX, use **Home > Refresh**, and inspect Executive Overview, Advisor Performance, and QA Review for refresh or visual errors.
 
 ## Governance Notes
 
 Real public SEC/IAPD firm data and synthetic private-style operating data remain conceptually separate in the project design. Power BI should preserve that distinction in labels and model documentation.
 
-Do not present the local CSV dashboard as production reporting. The recommended future production source is Snowflake reporting/analytics views, with refresh, permissions, and lineage handled outside this local portfolio scaffold.
+Do not present the local CSV dashboard as production reporting. A Snowflake-backed deployment requires refresh, permissions, lineage, and cost governance beyond this local portfolio report.

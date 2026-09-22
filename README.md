@@ -20,7 +20,7 @@ The depth story is not "I built a dashboard." The depth story is measured financ
 - Built statistical anomaly detectors for unusual AUM and revenue patterns.
 - Evaluated detection performance with precision, recall, false-positive rate, and F1 score.
 - Compared thresholds to show the tradeoff between catching bad numbers and overwhelming reviewers.
-- Delivered results through stakeholder-facing Excel and Power BI-ready reporting artifacts.
+- Delivered results through stakeholder-facing Excel and a completed three-page Power BI report.
 
 ## Key Results
 
@@ -59,10 +59,10 @@ Public SEC ADV firm data + synthetic private-style performance data
     -> seeded error injection
     -> hard-rule and statistical detection
     -> precision/recall/FPR evaluation
-    -> Excel workbook + Power BI-ready reporting layer
+    -> Excel workbook + Power BI report
 ```
 
-The local pipeline can run without Snowflake. The SEC ADV workflow can normalize, filter, sample, and quality-profile a user-supplied official/local CSV, while the SQL assets and loader scaffold show how the same design maps to a future Snowflake warehouse. It does not scrape the web or claim a completed full-universe production ingestion.
+The local pipeline can run without Snowflake. The SEC ADV workflow can normalize, filter, sample, and quality-profile a user-supplied official/local CSV, while the SQL assets and loaders implement the deployed Snowflake version. It does not scrape the web or claim a completed full-universe production ingestion.
 
 ## Data Boundary and Governance
 
@@ -75,16 +75,16 @@ This boundary matters because public firm facts can make the portfolio scenario 
 
 ## Tech Stack
 
-Python, pandas, Snowflake SQL, pytest, R, Excel export, Power BI-ready CSVs/docs, GitHub Actions.
+Python, pandas, Snowflake SQL, pytest, R, Excel export, Power BI Desktop, GitHub Actions.
 
 ## Repository Map
 
 - `ingestion/`: offline SEC ADV local-file normalization and quality profiling, Snowflake loader scaffold, and synthetic wealth-management data generator.
 - `qa/`: seeded error injection, hard-rule detection, statistical anomaly detection, evaluation metrics, and local QA pipeline.
 - `sql/`: Snowflake schema, KPI views, and QA reporting views.
-- `reporting/`: Excel export and Power BI-ready export/documentation layer.
+- `reporting/`: Excel export and Power BI export/documentation layer.
 - `reports/`: generated QA summary and written portfolio reports.
-- `outputs/`: committed small portfolio outputs such as Excel and Power BI-ready CSVs.
+- `outputs/`: small portfolio outputs such as Excel, Power BI CSVs, R plots, and the completed PBIX report.
 - `r/`: exploratory R AUM growth analysis artifact.
 - `docs/`: interview story, architecture notes, and Snowflake runbook.
 - `tests/`: pytest coverage for ingestion, generation, QA rules, evaluation, reporting exports, and documentation artifacts.
@@ -141,7 +141,8 @@ The exploratory analysis has been executed locally with that full Rscript path a
 
 - [Generated QA summary](reports/generated_qa_summary.md)
 - [Excel stakeholder workbook](outputs/excel/monthly_finance_report.xlsx)
-- [Power BI-ready CSV exports](outputs/powerbi/)
+- [Completed Power BI report](outputs/powerbi/wealth_management_analytics_qa.pbix)
+- [Power BI CSV exports](outputs/powerbi/)
 - [Power BI handoff guide](reporting/powerbi/README.md)
 - [QA evaluation report](reports/qa_evaluation_report.md)
 - [Live Snowflake execution report](reports/snowflake_live_execution.md)
@@ -161,13 +162,13 @@ The exploratory analysis has been executed locally with that full Rscript path a
 - Statistical thresholds were compared to show how sensitivity changes reviewer workload and missed issues.
 - False positives and false negatives are business tradeoffs: too many false positives waste reviewer time, while false negatives allow bad finance data into reports.
 - Real SEC firm data and synthetic private-style data are separated to preserve governance and avoid misrepresenting generated records as real client data.
-- Excel and Power BI-ready outputs make the QA layer consumable by finance stakeholders, not only engineers.
+- Excel and the completed Power BI report make the QA layer consumable by finance stakeholders, not only engineers.
 - The current results show strong recall but weak precision, which creates a concrete next-step discussion about tuning statistical detectors.
 
 ## Current Limitations / Future Work
 
 - No production Snowflake account is connected in CI.
-- No finished `.pbix` file is included or claimed.
+- The PBIX uses local Import-mode CSV sources; a Snowflake-backed refresh remains a separately governed deployment choice.
 - SEC ADV ingestion supports user-supplied official/local CSV normalization, filtering, sampling, and quality reporting; it performs no scraping, and raw official files are not committed.
 - The R analysis is exploratory, uses synthetic wealth-management performance data, and is not production predictive machine learning.
-- Future work includes running the Snowflake pipeline end to end, exercising local ingestion with a current official SEC/IAPD export supplied by the user, tuning statistical thresholds, and building a real Power BI dashboard file.
+- Future work includes exercising local ingestion with a current official SEC/IAPD export supplied by the user, tuning statistical thresholds, and optionally configuring a governed Snowflake-backed Power BI refresh.

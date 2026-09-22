@@ -19,11 +19,11 @@ This project demonstrates a finance reporting QA system for a wealth-management 
 5. Inject known reporting errors and create ground truth.
 6. Run hard-rule and statistical anomaly detection.
 7. Evaluate detections with precision, recall, false-positive rate, and F1 score.
-8. Export stakeholder-facing Excel and Power BI-ready artifacts.
+8. Export stakeholder-facing Excel and a completed Power BI report backed by curated local CSVs.
 
 ## Tables and Views
 
-Planned Snowflake database: `WEALTH_ANALYTICS`.
+Deployed Snowflake database: `WEALTH_ANALYTICS`.
 
 Core schemas:
 
@@ -64,6 +64,7 @@ Hard rules catch deterministic violations such as negative values, invalid fee r
 - `reports/generated_qa_summary.md`: committed QA summary with actual metrics.
 - `outputs/excel/monthly_finance_report.xlsx`: stakeholder workbook.
 - `outputs/powerbi/*.csv`: import-ready CSVs for Power BI Desktop.
+- `outputs/powerbi/wealth_management_analytics_qa.pbix`: completed three-page Power BI report.
 - `reporting/powerbi/`: model guide, data dictionary, DAX measures, and dashboard layout.
 - `r/advisor_aum_growth_model.R`: exploratory R analysis artifact.
 

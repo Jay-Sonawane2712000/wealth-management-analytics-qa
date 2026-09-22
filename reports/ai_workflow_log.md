@@ -130,6 +130,12 @@ Raw official SEC/IAPD files remain untracked because they can be large and indep
 
 The governance boundary is unchanged: supplied SEC/IAPD data is real public firm-level information, while branch, advisor, account, and monthly performance records remain synthetic private-style data. This workflow does not claim live scraping, a full adviser-universe ingestion, or production deployment.
 
+### 2026-09-21 - Final Live Deployment and Power BI Completion
+
+The Snowflake workflow was subsequently executed in a controlled trial environment, with verified table/view results recorded in `reports/snowflake_live_execution.md` and the warehouse suspended after validation. Live Snowflake remains excluded from CI because credentials stay local and trial availability and warehouse cost are external concerns.
+
+The completed `outputs/powerbi/wealth_management_analytics_qa.pbix` supersedes the earlier Power BI-ready-only status. Its Executive Overview, Advisor Performance, and QA Review pages use the curated local CSV exports in Import mode; it is a portfolio reporting artifact, not production reporting.
+
 ## Validation Notes
 
 ## Next Steps

@@ -2,7 +2,7 @@
 
 ## 30-Second Explanation
 
-I built a wealth-management reporting QA project that treats data quality as a measurable analytics outcome. It combines public SEC adviser firm context with synthetic advisor, account, and monthly performance data, injects known reporting errors, detects them with hard rules and statistical anomaly detection, and evaluates the detectors with precision, recall, and false-positive rate. The result is a portfolio project that shows finance reporting, QA measurement, and stakeholder-ready outputs in Excel and Power BI-ready files.
+I built a wealth-management reporting QA project that treats data quality as a measurable analytics outcome. It combines public SEC adviser firm context with synthetic advisor, account, and monthly performance data, injects known reporting errors, detects them with hard rules and statistical anomaly detection, and evaluates the detectors with precision, recall, and false-positive rate. The result is a portfolio project that shows finance reporting, QA measurement, and stakeholder-ready outputs in Excel and a completed Power BI report.
 
 ## 2-Minute Explanation
 
@@ -12,7 +12,7 @@ From there, the system generates a clean baseline dataset, validates it, and bui
 
 The important part is evaluation. The project scores detections against ground truth and reports precision, recall, false-positive rate, and F1 score. It also compares thresholds so the conversation becomes practical: how many bad records do we catch, and how much review workload do we create?
 
-Finally, I exported the outputs into a stakeholder Excel workbook and a Power BI-ready layer with CSVs, DAX measures, and dashboard specs.
+Finally, I exported the outputs into a stakeholder Excel workbook and a three-page Power BI report backed by curated local CSVs.
 
 ## STAR Story
 
@@ -20,7 +20,7 @@ Situation: Wealth-management reporting depends on accurate AUM, revenue, fee, ac
 
 Task: Build a portfolio project that demonstrates not just reporting, but measurable financial reporting QA with an honest data-governance story.
 
-Action: I created synthetic private-style wealth-management data, added public SEC adviser firm context, injected known reporting errors, built hard-rule and statistical detectors, and evaluated detections against a ground-truth answer key. I then surfaced the results in generated reports, Excel, and Power BI-ready assets.
+Action: I created synthetic private-style wealth-management data, added public SEC adviser firm context, injected known reporting errors, built hard-rule and statistical detectors, and evaluated detections against a ground-truth answer key. I then surfaced the results in generated reports, Excel, and a completed Power BI report.
 
 Result: The committed QA summary shows 40 injected errors, 2,795 combined detections, 0.800 recall, 0.011 precision, and 0.989 false-positive rate. The numbers expose the tradeoff clearly: the current detector setup catches most seeded issues but creates too much reviewer workload, which points naturally to threshold tuning and detector refinement.
 
@@ -43,16 +43,16 @@ The project is intentionally honest about QA tradeoffs. A detector with high rec
 
 - Tune statistical thresholds and add better grouping logic to improve precision.
 - Add model features that distinguish market-driven movement from data quality anomalies.
-- Run the SQL objects in a real Snowflake environment.
+- Extend the completed Snowflake deployment with repeatable orchestration and monitoring.
 - Exercise the strengthened local ingestion workflow with a current official SEC ADV/IAPD export supplied by the user, while keeping the raw file untracked.
-- Build and commit a real Power BI `.pbix` once the model is finalized.
+- Optionally configure a governed Snowflake-backed Power BI refresh.
 - Add orchestration and scheduled refresh around the local pipeline.
 
 ## Resume Bullet Options
 
 ### A. Data Analyst Version
 
-- Built a wealth-management reporting QA project with advisor, branch, firm, and executive KPI outputs, including Excel and Power BI-ready reporting artifacts.
+- Built a wealth-management reporting QA project with advisor, branch, firm, and executive KPI outputs, including Excel and a three-page Power BI report.
 - Evaluated seeded financial reporting errors with precision, recall, false-positive rate, and threshold tradeoff analysis to quantify data quality controls.
 - Created stakeholder-ready documentation and reporting outputs that translate technical QA results into finance review workflows.
 
@@ -60,7 +60,7 @@ The project is intentionally honest about QA tradeoffs. A detector with high rec
 
 - Designed a Snowflake-style analytics pipeline separating public SEC adviser firm data from synthetic private-style advisor/account/performance tables.
 - Built local ingestion, synthetic generation, validation, seeded-error injection, detection, and evaluation modules with pytest coverage.
-- Prepared warehouse-ready SQL schemas/views and credential-safe loader scaffolds while keeping generated raw data out of version control.
+- Deployed Snowflake SQL schemas/views and credential-safe bulk loaders while keeping generated raw data out of version control.
 
 ### C. Quant / Analytics Version
 

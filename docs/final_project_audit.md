@@ -1,6 +1,6 @@
 # Final Project Audit
 
-Audit date: 2026-09-20
+Audit date: 2026-09-21
 
 ## Test Status
 
@@ -10,7 +10,7 @@ Passed:
 python -m pytest
 ```
 
-Result observed during final audit: `134 passed`.
+Result observed before the final documentation update: `150 passed`. The post-edit result is recorded in the final audit handoff.
 
 ## Pipeline Command Status
 
@@ -77,6 +77,7 @@ This executed an exploratory analysis of synthetic wealth-management performance
 - [x] `outputs/powerbi/firm_kpis.csv`
 - [x] `outputs/powerbi/qa_metrics.csv`
 - [x] `outputs/powerbi/qa_threshold_comparison.csv`
+- [x] `outputs/powerbi/wealth_management_analytics_qa.pbix`
 - [x] `reporting/powerbi/README.md`
 - [x] `reporting/powerbi/data_dictionary.md`
 - [x] `reporting/powerbi/dax_measures.md`
@@ -87,8 +88,8 @@ This executed an exploratory analysis of synthetic wealth-management performance
 
 ## Claim Audit Checklist
 
-- [x] The repository does not claim that a finished Power BI `.pbix` file is included.
-- [x] The repository does not claim live Snowflake execution in CI or in this local audit.
+- [x] The completed Power BI `.pbix` is present and documents its local CSV sources and refresh workflow.
+- [x] The successful live Snowflake deployment is documented separately from CI; CI remains credential-free and offline.
 - [x] Advisor, account, branch, and monthly performance data are described as synthetic private-style data.
 - [x] SEC ADV/IAPD firm data is described as public real firm-level data or as a bounded local-file ingestion path.
 - [x] The main portfolio story is measured QA using seeded errors, ground truth, precision, recall, false-positive rate, and threshold tradeoffs.
@@ -100,6 +101,7 @@ Allowed committed outputs:
 
 - `outputs/excel/monthly_finance_report.xlsx`
 - `outputs/powerbi/*.csv`
+- `outputs/powerbi/wealth_management_analytics_qa.pbix`
 - `outputs/r/*.png`
 - `reports/generated_qa_summary.md`
 - `reports/r_aum_growth_model_summary.md`
@@ -117,8 +119,8 @@ Private files such as `.env` should remain untracked.
 
 ## Known Limitations
 
-- Snowflake schema and loader scaffolds exist, but live Snowflake execution depends on user credentials and a Snowflake account or trial.
-- No `.pbix` file is committed.
+- Live Snowflake validation depends on local credentials, trial availability, and cost; it is intentionally excluded from CI.
+- The PBIX currently refreshes from curated local CSVs rather than directly from Snowflake.
 - The R analysis was executed locally with `C:\Program Files\R\R-4.6.1\bin\Rscript.exe`; Rscript is not claimed to be on `PATH`, and reproducing it elsewhere requires local R plus the documented packages.
 - The R model is exploratory analysis on synthetic wealth-management performance data, not production predictive machine learning.
 - SEC ADV ingestion supports local official CSV normalization, filtering, sampling, and quality reporting; raw official files are not committed.
@@ -126,8 +128,7 @@ Private files such as `.env` should remain untracked.
 
 ## Next Optional Improvements
 
-- Run the full SQL stack in a real Snowflake trial with cost controls.
 - Tune statistical anomaly thresholds and grouping logic to improve precision.
 - Exercise the local ingestion interface with a current official SEC ADV/IAPD export when one is supplied, without committing the raw file.
-- Build a real Power BI Desktop `.pbix` from the documented model and CSV exports.
+- Optionally configure a governed Snowflake-backed Power BI refresh.
 - Add orchestration for repeatable local runs.

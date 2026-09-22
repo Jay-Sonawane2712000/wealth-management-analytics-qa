@@ -13,6 +13,7 @@ KEY_ARTIFACTS = [
     "outputs/powerbi/firm_kpis.csv",
     "outputs/powerbi/qa_metrics.csv",
     "outputs/powerbi/qa_threshold_comparison.csv",
+    "outputs/powerbi/wealth_management_analytics_qa.pbix",
     "docs/final_project_audit.md",
 ]
 
@@ -29,12 +30,11 @@ def test_key_committed_artifacts_exist():
         assert (PROJECT_ROOT / relative_path).exists(), f"Missing artifact: {relative_path}"
 
 
-def test_readme_does_not_claim_pbix_is_included():
+def test_readme_links_completed_pbix():
     readme = README.read_text(encoding="utf-8").lower()
 
-    assert "no finished `.pbix` file is included or claimed" in readme
-    assert "pbix is included" not in readme
-    assert "pbix file is included" not in readme
+    assert "completed power bi report" in readme
+    assert "outputs/powerbi/wealth_management_analytics_qa.pbix" in readme
 
 
 def test_readme_mentions_synthetic_data():

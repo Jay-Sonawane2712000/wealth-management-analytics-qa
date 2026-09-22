@@ -113,3 +113,11 @@ Do not upload:
 The complete workflow was executed successfully in a Snowflake Standard trial on Azure West US 2. It loaded 30 public SEC ADV firm rows and 310,275 synthetic/QA rows across nine destinations, then deployed and verified all seven KPI, reporting, and QA views. `ANALYTICS_WH` was suspended after execution. See [the live execution report](../reports/snowflake_live_execution.md) for verified counts and interpretation.
 
 Live Snowflake remains intentionally excluded from CI because credentials must remain local, trial availability is temporary, and warehouse execution can incur cost. CI-safe coverage uses offline dry-runs and mocked connector tests instead.
+
+## Final Validation Workflow
+
+1. Run `python -m pytest`.
+2. Run `python -m ingestion.load_project_data_to_snowflake --dry-run`; this validates inputs without connecting or changing Snowflake data.
+3. If a live deployment is intentionally being validated, confirm the seven expected views and documented counts with `python -m ingestion.deploy_snowflake_views`, then confirm `ANALYTICS_WH` is suspended.
+4. Regenerate the local Power BI CSV sources with `python -m reporting.export_powerbi_csvs`.
+5. Follow the [Power BI refresh and visual-validation steps](../reporting/powerbi/README.md#final-validation-workflow).

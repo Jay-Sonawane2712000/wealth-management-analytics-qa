@@ -50,11 +50,11 @@ def test_qa_threshold_comparison_contains_threshold_label(exported_powerbi_csvs)
     assert "threshold_label" in threshold_comparison.columns
 
 
-def test_powerbi_readme_states_no_pbix_is_included():
+def test_powerbi_readme_documents_completed_report_and_refresh():
     readme = (POWERBI_DOCS / "README.md").read_text(encoding="utf-8").lower()
 
-    assert "finished `.pbix` file is not included" in readme
-    assert "power bi-ready reporting layer" in readme
+    assert "wealth_management_analytics_qa.pbix" in readme
+    assert "home > refresh" in readme
 
 
 def test_dax_measures_include_core_finance_and_qa_measures():
@@ -65,7 +65,9 @@ def test_dax_measures_include_core_finance_and_qa_measures():
     assert "Recall =" in dax
 
 
-def test_dashboard_layout_includes_qa_review_page():
+def test_dashboard_layout_includes_completed_pages():
     layout = (POWERBI_DOCS / "dashboard_layout.md").read_text(encoding="utf-8")
 
-    assert "Page 3: QA & Anomaly Review" in layout
+    assert "Page 1: Executive Overview" in layout
+    assert "Page 2: Advisor Performance" in layout
+    assert "Page 3: QA Review" in layout
