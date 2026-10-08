@@ -144,6 +144,10 @@ The exploratory analysis has been executed locally with that full Rscript path a
 - [Completed Power BI report](outputs/powerbi/wealth_management_analytics_qa.pbix)
 - [Power BI CSV exports](outputs/powerbi/)
 - [Power BI handoff guide](reporting/powerbi/README.md)
+- Power BI dashboard screenshots:
+  - [Executive Overview](outputs/powerbi/screenshots/executive-overview.png)
+  - [Advisor Performance](outputs/powerbi/screenshots/advisor-performance.png)
+  - [QA & Anomaly Review](outputs/powerbi/screenshots/qa-review.png)
 - [QA evaluation report](reports/qa_evaluation_report.md)
 - [Live Snowflake execution report](reports/snowflake_live_execution.md)
 - [SEC ADV ingestion quality report](reports/sec_adv_ingestion_quality.md)
@@ -154,6 +158,20 @@ The exploratory analysis has been executed locally with that full Rscript path a
 - [Interview story](docs/interview_story.md)
 - [Architecture document](docs/architecture.md)
 - [Snowflake runbook](docs/snowflake_runbook.md)
+
+## Power BI Dashboard Preview
+
+### Executive Overview
+
+![Executive Overview](outputs/powerbi/screenshots/executive-overview.png)
+
+### Advisor Performance
+
+![Advisor Performance](outputs/powerbi/screenshots/advisor-performance.png)
+
+### QA & Anomaly Review
+
+![QA & Anomaly Review](outputs/powerbi/screenshots/qa-review.png)
 
 ## Interview Talking Points
 
